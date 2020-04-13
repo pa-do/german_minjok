@@ -21,5 +21,5 @@ urlpatterns = [
     path('ceos/', include('ceos.urls')),
     path('maps/', include('maps.urls')),
     path('kakaopay/', include('kakaopay.urls')),
-
+    path('naverpay/', include('naverpay.urls')),
 ]
