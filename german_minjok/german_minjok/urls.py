@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('ceos/', include('ceos.urls')),
     path('maps/', include('maps.urls')),
+    path('kakaopay/', include('kakaopay.urls')),
 
 ]
