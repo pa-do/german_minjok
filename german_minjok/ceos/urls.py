@@ -5,5 +5,4 @@ app_name = "ceos"
 
 urlpatterns = [
     path('', views.index, name="index"),
-
 ]
