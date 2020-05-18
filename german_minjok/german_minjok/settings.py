@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'maps',
     'kakaopay',
     'reviews',
+    'main',
 ]
 
 MIDDLEWARE = [
