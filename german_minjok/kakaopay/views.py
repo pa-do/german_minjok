@@ -17,9 +17,9 @@ def index(request):
             "quantity": "1",                # 구매 물품 수량
             "total_amount": "12000",        # 구매 물품 가격
             "tax_free_amount": "0",         # 구매 물품 비과세 (0으로 고정)
-            "approval_url": "https://225809b9fed94d70a0de5a77c875ca65.vfs.cloud9.us-west-2.amazonaws.com/kakaopay/approval",    # 결제 성공 시 이동할 url
-            "cancel_url": "https://225809b9fed94d70a0de5a77c875ca65.vfs.cloud9.us-west-2.amazonaws.com/kakaopay",               # 결제 취소 시 이동할 url
-            "fail_url": "https://225809b9fed94d70a0de5a77c875ca65.vfs.cloud9.us-west-2.amazonaws.com/kakaopay",                 # 결제 실패 시 이동할 url
+            "approval_url": "http://127.0.0.1:8080/kakaopay/approval",    # 결제 성공 시 이동할 url
+            "cancel_url": "http://127.0.0.1:8080/kakaopay/cancel/",               # 결제 취소 시 이동할 url
+            "fail_url": "http://127.0.0.1:8080/kakaopay/fail/",                 # 결제 실패 시 이동할 url
         }
 
         res = requests.post(URL, headers=headers, params=params)
