@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 import requests
+from ceos.models import OrderList
 
 # Create your views here.
 def index(request):
+    current_site = request.build_absolute_uri()
+    order_list = OrderList.objects.filter(user=request.user).filter(order_condition=0)[0]
     if request.method == "POST":
         URL = 'https://kapi.kakao.com/v1/payment/ready'
         headers = {
@@ -11,27 +14,34 @@ def index(request):
         }
         params = {
             "cid": "TC0ONETIME",    # 변경불가. 실제로 사용하려면 카카오와 가맹을 맺어야함. 현재 코드는 테스트용 코드
-            "partner_order_id": "1001",     # 주문번호
-            "partner_user_id": "german",    # 유저 아이디
-            "item_name": "연어초밥",        # 구매 물품 이름
+            "partner_order_id": "{}_{}".format(order_list.store.store_number, order_list.pk),     # 주문번호
+            "partner_user_id": "{}".format(order_list.user.username),    # 유저 아이디
+            "item_name": "{}".format(order_list.order_name),        # 구매 물품 이름
             "quantity": "1",                # 구매 물품 수량
-            "total_amount": "12000",        # 구매 물품 가격
+            "total_amount": "{}".format(order_list.order_price),        # 구매 물품 가격
             "tax_free_amount": "0",         # 구매 물품 비과세 (0으로 고정)
-            "approval_url": "http://127.0.0.1:8080/kakaopay/approval",    # 결제 성공 시 이동할 url
-            "cancel_url": "http://127.0.0.1:8080/kakaopay/cancel/",               # 결제 취소 시 이동할 url
-            "fail_url": "http://127.0.0.1:8080/kakaopay/fail/",                 # 결제 실패 시 이동할 url
+            "approval_url": "{}approval/".format(current_site),    # 결제 성공 시 이동할 url
+            "cancel_url": "{}cancel/".format(current_site),               # 결제 취소 시 이동할 url
+            "fail_url": "{}fail/".format(current_site),                 # 결제 실패 시 이동할 url
         }
 
         res = requests.post(URL, headers=headers, params=params)
-        request.session['tid'] = res.json()['tid']      # 결제 승인시 사용할 tid를 세션에 저장
-        next_url = res.json()['next_redirect_pc_url']   # 결제 페이지로 넘어갈 url을 저장
+        request.session['tid'] = res.json()['tid']  # 결제 승인시 사용할 tid를 세션에 저장
+        next_url = res.json()['next_redirect_pc_url']  # 결제 페이지로 넘어갈 url을 저장
         return redirect(next_url)
 
+    context = {
+        'store_name': order_list.store.store_name,
+        'order_location': order_list.order_location,
+        'order_name': order_list.order_name,
+        'order_price': order_list.order_price,
+    }
 
-    return render(request, 'kakaopay/index.html')
+    return render(request, 'kakaopay/index.html', context)
 
 
 def approval(request):
+    order_list = OrderList.objects.filter(user=request.user).filter(order_condition=0)[0]
     URL = 'https://kapi.kakao.com/v1/payment/approve'
     headers = {
         "Authorization": "KakaoAK " + "965c38ccc1d83d33c9577c0b870eb506",   # 변경불가
@@ -40,13 +50,12 @@ def approval(request):
     params = {
         "cid": "TC0ONETIME",    # 변경불가. 실제로 사용하려면 카카오와 가맹을 맺어야함. 현재 코드는 테스트용 코드
         "tid": request.session['tid'],  # 결제 요청시 세션에 저장한 tid
-        "partner_order_id": "1001",     # 주문번호
-        "partner_user_id": "german",    # 유저 아이디
+        "partner_order_id": "{}_{}".format(order_list.store.store_number, order_list.pk),     # 주문번호
+        "partner_user_id": "{}".format(order_list.user.username),    # 유저 아이디
         "pg_token": request.GET.get("pg_token"),     # 쿼리 스트링으로 받은 pg토큰
     }
 
     res = requests.post(URL, headers=headers, params=params)
-    print('여기->', res.json())
     amount = res.json()['amount']['total']
     res = res.json()
     context = {
