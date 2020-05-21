@@ -16,6 +16,7 @@ from django.http import JsonResponse
 from ceos.forms import StoreForm
 from .models import UserLocation, UserPhoneCheck
 from .forms import UserForm
+from . import _keys
 # Create your views here.
 
 def signup_div(request):
@@ -104,14 +105,14 @@ def phone(request, phone_num):
     url = "https://sens.apigw.ntruss.com"
     requestUrl = "/sms/v2/services/"
     requestUrl2 = "/messages"
-    serviceId = "ncp:sms:kr:259241969530:german"
-    access_key = "MnYIs6OrJkEdFJcnsRm1"
+    serviceId = _keys.serviceId
+    access_key = _keys.access_key
 
     uri = requestUrl + serviceId + requestUrl2
     apiUrl = url + uri
 
     def make_signaure(uri, access_key):
-        secret_key = "h4Wl6coduavPADMRcnkGFIXz3XOl4G4J8gyT9Vmy"
+        secret_key = _keys.secret_key
         secret_key = bytes(secret_key, 'UTF-8')
         method = "POST"
         message = method + " " + uri + "\n" + timestamp + "\n" + access_key
