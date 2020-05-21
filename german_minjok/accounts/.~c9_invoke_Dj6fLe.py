@@ -1,3 +1,10 @@
+import requests
+import time
+import base64
+import hashlib
+import hmac
+import json
+
 from random import randint
 
 from django.db import models
@@ -8,11 +15,13 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class User(AbstractUser):
     phone_number = models.CharField(max_length=20)
-    auth_code = models.IntegerField(default=1)
+    auth_code = models.IntegerField()
 
 class UserLocation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     location = models.CharField(max_length=100)
+
+
 
 class UserPhoneCheck(models.Model):
     phone_number = models.CharField(verbose_name='휴대폰 번호', primary_key=True, max_length=11)
