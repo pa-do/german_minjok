@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load carton_tags %}
+{% get_cart as cart %}
+
+{% block body %}
+<!--비동기 요청으로 체크된 항목들 장바구니로 날리겠습니다.-->
+    {% for menu in menu_list %}
+        <h5>{{ menu.menu_name }}</h5>
+        <p>{{ menu.menu_info }}</p>
+        <span>{{ menu_price }}</span>
+        <div class="btn-group btn-group-sm" role="group">
+            <button data-menu="{{ menu.pk }}"  id="minusBtn" type="button" class="btn btn-light btn-group-sm">-</button>
+            <input id="cnt-{{ product.pk }}" type="button" class="btn btn-outline-secondary btn-group-sm" value="0" readonly>
+            <button data-menu="{{ menu.pk }}" id="plusBtn" type="button" class="btn btn-light btn-group-sm">+</button>
+        </div>
+    {% endfor %}
+    <button id="submitBtn"><span class="badge badge-light">{{ cart.total }}</span>주문하기</button>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const minusBtnList = document.querySelectorAll('.minusBtn')
+        minusBtnList.forEach(function(minusBtn){
+            minusBtn.addEventListener('click', function(event){
+                const menuPk = minusBtn.dataset.menu
+                // console.log(menuPk)
+                axios.get('/cart/remove/', {
+                    params: {
+                        menu: menuPk,
+                    }
+                })
+                 .then(function(res){
+                     console.log('minusBtn')
+                     const countText = document.querySelector(`#cnt-${ menuPk }`)
+                     if (countText.value > 0) {
+                         newCount = Number(countText.value) - 1
+                         countText.value = newCount
+                     }
+                 })
+                 .catch(function(err){
+                     console.log(err)
+                 })
+            })
+        })
+        const plusBtnList = document.querySelectorAll('.plusBtn')
+        plusBtnList.forEach(function(plusBtn){
+            plusBtn.addEventListener('click', function(event){
+                const menuPk = plusBtn.dataset.menu
+                axios.get('/cart/add/', {
+                    params: {
+                        menu: menuPk,
+                    }
+                })
+                 .then(function(res){
+                     console.log(res)
+                     const countText = document.querySelector(`#cnt-${ menuPk }`)
+                     newCount = Number(countText.value) + 1
+                     countText.value = newCount
+                 })
+                 .catch(function(err){
+                     console.log(err)
+                 })
+            })
+        })
+    </script>
+{% endblock %}

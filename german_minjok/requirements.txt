@@ -4,7 +4,6 @@ chardet==3.0.4
 Django==2.1.15
 django-bootstrap-pagination==1.7.1
 django-bootstrap4==1.1.1
-django-carton==1.2.1
 django-extensions==2.2.9
 idna==2.9
 Pillow==7.1.2
