@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'bootstrap4',
     'bootstrap_pagination',
+    'carton',
 
     # origin
     'django.contrib.admin',
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'kakaopay',
     'reviews',
     'main',
+    'shopping',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +138,5 @@ AUTH_USER_MODEL = 'accounts.User'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CART_PRODUCT_MODEL = 'ceos.models.StoreMenu'
