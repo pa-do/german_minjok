@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load carton_tags %}
+{% get_cart as cart %}
+
+{% block content %}
+    {% for item in cart.items %}
+        <h5>{{ item.product.name }}</h5>
+        <p>수량: {{ item.quantity }}</p>
+        <p>가격: {{ item.subtotal }}</p>
+        <hr>
+    {% endfor %}
+    <h4>주문가격 {{ cart.total }} 원</h4>
+{% endblock %}
