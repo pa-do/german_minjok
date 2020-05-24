@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="{% url 'accounts:consumer' %}" id="consumerForm" method="POST">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <div id="phoneGroup">
+            <label for="phoneNum">연락처: <input id="phoneNum" name="phone_number" placeholder="휴대폰 번호 입력(- 제외)" type="text"></label>
+            <input type="button" id="phoneBtn" class="btn btn-light" value="인증하기">
+            <label for="authNum"><input id="authNum" placeholder="인증번호 입력" type="text"></label>
+            <input type="button" id="authBtn" class="btn btn-light" value="인증">
+        </div>
+        <div id="addrGroup">
+        <p>주소</p>
+            <input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
+            <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
+            <input type="button" id="findBtn" value="우편번호 찾기"><br>
+        </div>
+        <button class="btn btn-primary submitBtn">회원가입</button>
+    </form>
+    
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const popBtn = document.querySelector('#findBtn')
+        popBtn.addEventListener('click', function(event){
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var roadAddr = data.roadAddress; // 도로명 주소 변수
+                    var extraRoadAddr = '';
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraRoadAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                       extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                     // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraRoadAddr !== ''){
+                        extraRoadAddr = ' (' + extraRoadAddr + ')';
+                    }
+                    if(roadAddr !== ''){
+                        roadAddr += extraRoadAddr;
+                    }
+                    document.getElementById("roadAddress").value = roadAddr;
+                }
+            }).open();
+        })
+        const phoneBtn = document.querySelector('#phoneBtn')
+        const phoneInput = document.querySelector('#phoneNum')
+        const phoneGroup = document.querySelector('#phoneGroup')
+        phoneBtn.addEventListener('click', function(event){
+            const phoneNumber = phoneInput.value
+            // console.log(phoneNumber)
+            axios.get(`/accounts/${phoneNumber}/`)
+             .then(function(res){
+                 console.log(res)
+                 phoneBtn.classList.remove("btn-light")
+                 phoneBtn.classList.add("btn-warning")
+                 phoneInput.readOnly = true
+             })
+             .catch(function(err){
+                 console.log(err)
+             })
+        })
+        const authBtn = document.querySelector('#authBtn')
+        const authInput = document.querySelector('#authNum')
+        authBtn.addEventListener('click', function(evnet){
+            const phoneNumber = phoneInput.value
+            const authNumber = authInput.value
+            // console.log(phoneNumber, authNumber)
+            axios.get(`/accounts/${phoneNumber}/${authNumber}/`)
+             .then(function(res){
+                // console.log(res)
+                if (res.data.message === 'success') {
+                    if (document.querySelector('#warnText')) {
+                        const warnText = document.querySelector('#warnText')
+                        phoneGroup.removeChild(warnText)
+                    } else if (document.querySelector('#phoneWarnText')) {
+                        const phoneWarnText = document.querySelector('#phoneWarnText')
+                        phoneGroup.removeChild(phoneWarnText)
+                    }
+                    authInput.style.display = 'none'
+                    authBtn.disabled = 'disabled'
+                    authBtn.classList.remove("btn-light")
+                    authBtn.classList.add("btn-success")
+                    phoneBtn.style.display = 'none'
+                    phoneBtn.disabled = 'disabled'
+                } else if (res.data.message === 'fail') {
+                    if (document.querySelector('#warnText')) {
+                        console.log('Already exsist')
+                    } else {
+                        const warnText = document.createElement('p')
+                        warnText.classList.add("text-danger")
+                        warnText.id = 'warnText'
+                        warnText.innerText = "유효하지 않은 인증번호입니다."
+                        phoneGroup.appendChild(warnText)
+                    }
+                }
+             })
+             .catch(function(err){
+                console.log(err)
+             })
+        })
+
+        const submitBtn = document.querySelector('.submitBtn')
+        submitBtn.addEventListener('click', function(evnet){
+            event.preventDefault()
+            // console.log('submitBtn')
+            let phoneCheck = false
+            let addrCheck = false
+            for (let i=0; i<authBtn.classList.length; i++) {
+                if (authBtn.classList[i] === "btn-success") {
+                    phoneCheck = true
+                    break
+                }
+            }
+            const roadAddr = document.querySelector('#roadAddress')
+            const detailAddr = document.querySelector('#detailAddress')
+            if ( roadAddr.value !== '' && detailAddr.value !== '') {
+                addrCheck = true
+            }
+            if (phoneCheck && addrCheck) {
+                const consumerForm = document.querySelector('#consumerForm')
+                consumerForm.submit()
+                return
+            } 
+            if (!phoneCheck) {
+                if (document.querySelector('#phoneWarnText')){
+                    console.log('Phone Warning already exist')
+                } else {
+                    const phoneWarnText = document.createElement('p')
+                    phoneWarnText.classList.add("text-danger")
+                    phoneWarnText.id = 'phoneWarnText'
+                    phoneWarnText.innerText = "휴대폰 인증을 완료해주세요."
+                    phoneGroup.appendChild(phoneWarnText)
+                }
+            } 
+            if (!addrCheck) {
+                if (document.querySelector('#addrWarnText')) {
+                    console.log('Address Warning already exist')
+                } else {
+                    const addrWarnText = document.createElement('p')
+                    addrWarnText.classList.add("text-danger")
+                    addrWarnText.id = 'addrWarnText'
+                    addrWarnText.innerText = "주소를 확인해 주세요."
+                    const addrGroup = document.querySelector('#addrGroup')
+                    addrGroup.appendChild(addrWarnText)
+                }
+            } else if (addrCheck) {
+                if (document.querySelector('#addrWarnText')) {
+                    const addrWarnText = document.querySelector('#addrWarnText')
+                    const addrGroup = document.querySelector('#addrGroup')
+                    addrGroup.removeChild(addrWarnText)
+                }
+            }
+        })
+    </script>
+{% endblock %}

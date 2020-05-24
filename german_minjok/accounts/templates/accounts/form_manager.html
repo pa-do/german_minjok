@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="{% url 'accounts:manager' %}" id="managerForm" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <div id="phoneGroup">
+            <label for="phoneNum">연락처: <input id="phoneNum" name="phone_number" placeholder="휴대폰 번호 입력(- 제외)" type="text"></label>
+            <input type="button" id="phoneBtn" class="btn btn-light" value="인증하기">
+            <label for="authNum"><input id="authNum" placeholder="인증번호 입력" type="text"></label>
+            <input type="button" id="authBtn" class="btn btn-light" value="인증">
+        </div>
+        {{ store_form.as_p }}
+        <button class="btn btn-primary submitBtn">회원가입</button>
+    </form>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const phoneBtn = document.querySelector('#phoneBtn')
+        const phoneInput = document.querySelector('#phoneNum')
+        const phoneGroup = document.querySelector('#phoneGroup')
+        phoneBtn.addEventListener('click', function(event){
+            const phoneNumber = phoneInput.value
+            // console.log(phoneNumber)
+            axios.get(`/accounts/${phoneNumber}/`)
+             .then(function(res){
+                 console.log(res)
+                 phoneBtn.classList.remove("btn-light")
+                 phoneBtn.classList.add("btn-warning")
+                 phoneInput.readOnly = true
+             })
+             .catch(function(err){
+                 console.log(err)
+             })
+        })
+        const authBtn = document.querySelector('#authBtn')
+        const authInput = document.querySelector('#authNum')
+        authBtn.addEventListener('click', function(evnet){
+            const phoneNumber = phoneInput.value
+            const authNumber = authInput.value
+            // console.log(phoneNumber, authNumber)
+            axios.get(`/accounts/${phoneNumber}/${authNumber}/`)
+             .then(function(res){
+                // console.log(res)
+                if (res.data.message === 'success') {
+                    if (document.querySelector('#warnText')) {
+                        const warnText = document.querySelector('#warnText')
+                        phoneGroup.removeChild(warnText)
+                    } else if (document.querySelector('#phoneWarnText')) {
+                        const phoneWarnText = document.querySelector('#phoneWarnText')
+                        phoneGroup.removeChild(phoneWarnText)
+                    }
+                    authInput.style.display = 'none'
+                    authBtn.disabled = 'disabled'
+                    authBtn.classList.remove("btn-light")
+                    authBtn.classList.add("btn-success")
+                    phoneBtn.style.display = 'none'
+                    phoneBtn.disabled = 'disabled'
+                } else if (res.data.message === 'fail') {
+                    if (document.querySelector('#warnText')) {
+                        console.log('Already exsist')
+                    } else {
+                        const warnText = document.createElement('p')
+                        warnText.classList.add("text-danger")
+                        warnText.id = 'warnText'
+                        warnText.innerText = "유효하지 않은 인증번호입니다."
+                        phoneGroup.appendChild(warnText)
+                    }
+                }
+             })
+             .catch(function(err){
+                console.log(err)
+             })
+        })
+        const submitBtn = document.querySelector('.submitBtn')
+        submitBtn.addEventListener('click', function(evnet){
+            event.preventDefault()
+            // console.log('submitBtn')
+            let phoneCheck = false
+            for (let i=0; i<authBtn.classList.length; i++) {
+                if (authBtn.classList[i] === "btn-success") {
+                    phoneCheck = true
+                    break
+                }
+            }
+            if (phoneCheck) {
+                const managerForm = document.querySelector('#managerForm')
+                managerForm.submit()
+                return
+            } 
+            if (!phoneCheck) {
+                if (document.querySelector('#phoneWarnText')){
+                    console.log('Phone Warning already exist')
+                } else {
+                    const phoneWarnText = document.createElement('p')
+                    phoneWarnText.classList.add("text-danger")
+                    phoneWarnText.id = 'phoneWarnText'
+                    phoneWarnText.innerText = "휴대폰 인증을 완료해주세요."
+                    phoneGroup.appendChild(phoneWarnText)
+                }
+            } 
+        })
+    </script>
+
+{% endblock %}

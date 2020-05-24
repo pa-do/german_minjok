@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
+
 {% block content %}
+    <h1>MAIN</h1>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'accounts:logout' %}">logout</a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">login</a>
+        <a href="{% url 'accounts:div' %}">sign up</a>
+    {% endif %}
+
     <div>
         <!-- carousel -->
         <div id="carouselExampleControls" class="carousel slide h-480" data-ride="carousel">
