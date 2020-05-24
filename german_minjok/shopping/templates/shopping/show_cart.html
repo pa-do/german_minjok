@@ -4,11 +4,34 @@
 {% get_cart as cart %}
 
 {% block content %}
-    {% for item in cart.items %}
-        <h5>{{ item.product.name }}</h5>
-        <p>수량: {{ item.quantity }}</p>
-        <p>가격: {{ item.subtotal }}</p>
-        <hr>
-    {% endfor %}
-    <h4>주문가격 {{ cart.total }} 원</h4>
+
+{% if status %}
+  <div class="pt-3 row justify-content-center">
+    <h2 class="text-center my-5 col-12">장바구니</h2>
+    <div class="col-4 p-5 bg-light">
+      <h3 class="text-center my-5">가게 이름</h3>
+      <div>
+        <div class="my-3 row"><div class="h5 col-6">장소</div><div class="h6 col-6 text-right">주문 장소</div></div>
+        <div class="my-3 row"><div class="h5 col-12">주문목록</div></div>
+        {% for item in cart.items %}
+          <div class="h6 col-12 text-right">{{ item.product.name }} {{ item.quantity }}개</div>
+          <div class="h6 col-12 text-right">가격: {{ item.subtotal }}</div>
+        {% endfor %}
+        <div class="my-3 row"><div class="h5 col-6">결제 금액</div><div class="h6 col-6 text-right">{{ cart.total }}원</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-5">
+    <form method="post" class="col-12 text-center">
+      {% csrf_token %}
+      <button class="btn btn-warning">카카오페이로 결제하기</button>
+      <div>주의!!! kakao developers에 해당 서버 도메인 등록해야함</div>
+    </form>
+  </div>
+{% else %}
+<div class="mt-5 pt-5 row justify-content-center">
+  <h2 class="text-center my-5 col-12">장바구니가 비었어요</h2>
+</div>
+{% endif %}
+
 {% endblock %}

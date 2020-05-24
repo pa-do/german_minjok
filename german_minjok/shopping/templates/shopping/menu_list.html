@@ -3,7 +3,7 @@
 {% load carton_tags %}
 {% get_cart as cart %}
 
-{% block body %}
+{% block content %}
 <!--비동기 요청으로 체크된 항목들 장바구니로 날리겠습니다.-->
     {% for menu in menu_list %}
         <h5>{{ menu.menu_name }}</h5>
