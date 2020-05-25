@@ -1,14 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>MAIN</h1>
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'accounts:logout' %}">logout</a>
-    {% else %}
-        <a href="{% url 'accounts:login' %}">login</a>
-        <a href="{% url 'accounts:div' %}">sign up</a>
-    {% endif %}
-
     <div>
         <!-- carousel -->
         <div id="carouselExampleControls" class="carousel slide h-480" data-ride="carousel">
@@ -37,7 +29,7 @@
         <form class="form-inline justify-content-md-center my-3 mx-3 col-12">
           <div class="form-group col-12 justify-content-md-center">
             <!--<input type="text" id="sample3_postcode" placeholder="우편번호">-->
-            <input type="text" class="form-control col-6" id="sample3_address" placeholder="어디로 배달해 드릴까요?"><br>
+            <input type="text" class="form-control col-6" id="sample3_address" placeholder="어디로 배달해 드릴까요?" readonly><br>
             <input type="button" class="btn btn-info" onclick="sample3_execDaumPostcode()" value="검색"><br>
             <!-- <input type="text" id="sample3_detailAddress" placeholder="상세주소"> -->
             <!-- <input type="text" id="sample3_extraAddress" placeholder="참고항목"> -->
@@ -226,9 +218,6 @@
               </div>
             </div>
           </div>
-
-
         </div>
-
     </div>
 {% endblock %}
