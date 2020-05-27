@@ -120,7 +120,7 @@ def phone(request, phone_num):
         signigKey = base64.b64encode(hmac.new(secret_key, message, digestmod=hashlib.sha256).digest())
         return signigKey
 
-    messages = { "to" : "01076338540" }
+    messages = { "to" : user_phone.phone_number }
     body = {
         "type" : "SMS",
         "contentType" : "COMM",
