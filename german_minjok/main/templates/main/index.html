@@ -1,30 +1,111 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
+<div>
+  <!-- carousel -->
+  <div
+    id="carouselExampleControls"
+    class="carousel slide h-480"
+    data-ride="carousel"
+  >
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          src="https://www.ecopetit.cat/wpic/mpic/178-1781519_star.png"
+          class="d-block w-100"
+          alt=""
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="https://www.ecopetit.cat/wpic/mpic/178-1781519_star.png"
+          class="d-block w-100"
+          alt=""
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="https://www.ecopetit.cat/wpic/mpic/178-1781519_star.png"
+          class="d-block w-100"
+          alt=""
+        />
+      </div>
+    </div>
+    <a
+      class="carousel-control-prev"
+      href="#carouselExampleControls"
+      role="button"
+      data-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a
+      class="carousel-control-next"
+      href="#carouselExampleControls"
+      role="button"
+      data-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 
-{% block content %}
-    <div>
-        <!-- carousel -->
-        <div id="carouselExampleControls" class="carousel slide h-480" data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="https://www.ecopetit.cat/wpic/mpic/178-1781519_star.png" class="d-block w-100" alt="">
-            </div>
-            <div class="carousel-item">
-              <img src="https://www.ecopetit.cat/wpic/mpic/178-1781519_star.png" class="d-block w-100" alt="">
-            </div>
-            <div class="carousel-item">
-              <img src="https://www.ecopetit.cat/wpic/mpic/178-1781519_star.png" class="d-block w-100" alt="">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
+  <!-- 주소 검색창 -->
+  <form class="form-inline justify-content-md-center my-3 mx-3 col-12" id="adr">
+    <div class="form-group col-12 justify-content-md-center">
+      <!--<input type="text" id="sample3_postcode" placeholder="우편번호">-->
+      <input
+        type="text"
+        class="form-control col-4"
+        id="address"
+        placeholder="어디로 배달해 드릴까요?"
+        readonly
+      /><br />
+      <input
+        type="text"
+        class="form-control col-2"
+        id="detailAddress"
+        placeholder="상세주소"
+      />
+      <input
+        type="button"
+        class="btn btn-info"
+        onclick="sample3_execDaumPostcode()"
+        value="주소 검색"
+      /><br />
+      <!-- <input type="text" id="sample3_extraAddress" placeholder="참고항목"> -->
 
+<<<<<<< HEAD
+      <div
+        id="wrap"
+        style="
+          display: none;
+          border: 1px solid;
+          width: 500px;
+          height: 300px;
+          margin: 5px 0;
+          position: relative;
+        "
+      >
+        <img
+          src="//t1.daumcdn.net/postcode/resource/images/close.png"
+          id="btnFoldWrap"
+          style="
+            cursor: pointer;
+            position: absolute;
+            right: 0px;
+            top: -1px;
+            z-index: 1;
+          "
+          onclick="foldDaumPostcode()"
+          alt="접기 버튼"
+        />
+      </div>
+
+      <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+      <script>
+        // 우편번호 찾기 찾기 화면을 넣을 element
+        var element_wrap = document.getElementById("wrap");
+=======
         <!-- 검색창 -->
         <form class="form-inline justify-content-md-center my-3 mx-3 col-12">
           <div class="form-group col-12 justify-content-md-center">
@@ -36,38 +117,39 @@
             <div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
             <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
             </div>
+>>>>>>> master
 
-            <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-            <script>
-                // 우편번호 찾기 찾기 화면을 넣을 element
-                var element_wrap = document.getElementById('wrap');
+        function foldDaumPostcode() {
+          // iframe을 넣은 element를 안보이게 한다.
+          element_wrap.style.display = "none";
+        }
 
-                function foldDaumPostcode() {
-                    // iframe을 넣은 element를 안보이게 한다.
-                    element_wrap.style.display = 'none';
-                }
+        function sample3_execDaumPostcode() {
+          // 현재 scroll 위치를 저장해놓는다.
+          var currentScroll = Math.max(
+            document.body.scrollTop,
+            document.documentElement.scrollTop
+          );
+          new daum.Postcode({
+            oncomplete: function (data) {
+              // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-                function sample3_execDaumPostcode() {
-                    // 현재 scroll 위치를 저장해놓는다.
-                    var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-                    new daum.Postcode({
-                        oncomplete: function(data) {
-                            // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+              // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+              // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+              var addr = ""; // 주소 변수
+              var extraAddr = ""; // 참고항목 변수
 
-                            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                            var addr = ''; // 주소 변수
-                            var extraAddr = ''; // 참고항목 변수
+              //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+              if (data.userSelectedType === "R") {
+                // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+              } else {
+                // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+              }
 
-                            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                                addr = data.roadAddress;
-                            } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                                addr = data.jibunAddress;
-                            }
-
-                            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                            /*
+              // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+              /*
                             if(data.userSelectedType === 'R'){
                                 // 법정동명이 있을 경우 추가한다. (법정리는 제외)
                                 // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
@@ -89,134 +171,124 @@
                                 document.getElementById("sample3_extraAddress").value = '';
                             }
                             */
-                            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                            // document.getElementById('sample3_postcode').value = data.zonecode;
-                            document.getElementById("sample3_address").value = addr;
-                            // 커서를 상세주소 필드로 이동한다.
-                            // document.getElementById("sample3_detailAddress").focus();
+              // 우편번호와 주소 정보를 해당 필드에 넣는다.
+              // document.getElementById('sample3_postcode').value = data.zonecode;
+              document.getElementById("address").value = addr;
+              // 커서를 상세주소 필드로 이동한다.
+              document.getElementById("detailAddress").focus();
 
-                            // iframe을 넣은 element를 안보이게 한다.
-                            // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
-                            element_wrap.style.display = 'none';
+              // iframe을 넣은 element를 안보이게 한다.
+              // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+              element_wrap.style.display = "none";
 
-                            // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
-                            document.body.scrollTop = currentScroll;
-                        },
-                        // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
-                        onresize : function(size) {
-                            element_wrap.style.height = size.height+'px';
-                        },
-                        width : '100%',
-                        height : '100%'
-                    }).embed(element_wrap);
+              // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+              document.body.scrollTop = currentScroll;
+            },
+            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+            onresize: function (size) {
+              element_wrap.style.height = size.height + "px";
+            },
+            width: "100%",
+            height: "100%",
+          }).embed(element_wrap);
 
-                    // iframe을 넣은 element를 보이게 한다.
-                    element_wrap.style.display = 'block';
-                }
-            </script>
-          </div>
-        </form>
-
-        <!-- cards -->
-        <div class="row row-cols-1 row-cols-md-4 col-11 mx-auto">
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">전체 보기</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">1인분 주문</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">프랜차이즈</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">치킨</h5>
-              </div>
-            </div>
-          </div>
-
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">피자/양식</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">중국집</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">한식</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">일식/돈가스</h5>
-              </div>
-            </div>
-          </div>
-
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">족발/보쌈</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">분식</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">야식</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col mb-4">
-            <div class="card">
-              <img src="https://www.yogiyo.co.kr/mobile/image/category-01.png" class="card-img-top" alt="">
-              <div class="card-body">
-                <h5 class="card-title">카페/디저트</h5>
-              </div>
-            </div>
-          </div>
-        </div>
+          // iframe을 넣은 element를 보이게 한다.
+          element_wrap.style.display = "block";
+        }
+      </script>
     </div>
+  </form>
+
+  <!-- cards -->
+  <div class="row row-cols-1 row-cols-md-3 col-8 mx-auto">
+    <div class="col mb-4">
+      <div class="card" onclick="setSession(5)">
+        <img
+          src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
+          class="card-img-top"
+          alt=""
+        />
+        <div class="card-body">
+          <h5 class="card-title">전체 보기</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card" onclick="setSession(0)">
+        <img
+          src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
+          class="card-img-top"
+          alt=""
+        />
+        <div class="card-body">
+          <h5 class="card-title">한식</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card" onclick="setSession(1)">
+        <img
+          src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
+          class="card-img-top"
+          alt=""
+        />
+        <div class="card-body">
+          <h5 class="card-title">중국집</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card" onclick="setSession(2)">
+        <img
+          src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
+          class="card-img-top"
+          alt=""
+        />
+        <div class="card-body">
+          <h5 class="card-title">일식</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card" onclick="setSession(3)">
+        <img
+          src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
+          class="card-img-top"
+          alt=""
+        />
+        <div class="card-body">
+          <h5 class="card-title">피자</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4">
+      <div class="card" onclick="setSession(4)">
+        <img
+          src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
+          class="card-img-top"
+          alt=""
+        />
+        <div class="card-body">
+          <h5 class="card-title">치킨</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setSession(category) {
+      if (window.sessionStorage) {
+        adr = document.getElementById("address").value;
+        if (adr != "") {
+          sessionStorage.setItem("adr", adr);
+          sessionStorage.setItem(
+            "dadr",
+            document.getElementById("detailAddress").value
+          );
+          window.location.href = "/main/" + category + "/temp";
+        }
+      }
+    }
+  </script>
+</div>
 {% endblock %}

@@ -1,9 +1,6 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <h1>MAPS</h1>
+<h3 class="text-center my-3">배달 받으실 곳</h3>
 <div class="container">
-<div id="map" class="justify-content-center" style="width:80%;height:600px;"></div>
+<div id="map" class="justify-content-center" style="height:400px;"></div>
 </div>
 
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=8wyuo7ilvu"></script>
@@ -132,11 +129,10 @@ function initGeocoder() {
 
     searchAddressToCoordinate($('#address').val());
   });
-
-  searchAddressToCoordinate('경상북도 구미시 진평2길 28-6');
+  var adr = sessionStorage.getItem('adr');
+  searchAddressToCoordinate(adr);
 }
 
 naver.maps.onJSContentLoaded = initGeocoder;
 naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
 </script>
-{% endblock %}
