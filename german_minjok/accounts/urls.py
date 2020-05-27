@@ -1,6 +1,4 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
 
 from . import views
 
@@ -14,4 +12,4 @@ urlpatterns = [
     path('<str:phone_num>/', views.phone, name='phone'),
     path('<str:phone_num>/<str:auth_num>/', views.phone_auth, name='phone_auth'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

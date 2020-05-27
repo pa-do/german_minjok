@@ -1,11 +1,38 @@
-<h1>TEMP</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>음식점 리스트 {{ category }}</h1>
+
+{% include 'maps/index.html' %}
+
+{% for store in stores %}
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img src="{{ store.store_image.url }}" class="card-img" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ store.store_name }}</h5>
+          <p class="card-text">주소 : {{ store.store_location }}</p>
+          <p class="card-text"><small class="text-muted">가게 전화번호 : {{ store.store_phone }}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
 <button onclick="getSession()">button</button>
 
 <script>
   function getSession() {
-      adr = sessionStorage.getItem('adr');
-      dadr = sessionStorage.getItem('dadr');
+      var adr = sessionStorage.getItem('adr');
+      var dadr = sessionStorage.getItem('dadr');
       console.log(adr);
       console.log(dadr);
+      console.log(type(adr));
   }
 </script>
+
+{% endblock %}
