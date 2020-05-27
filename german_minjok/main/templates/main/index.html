@@ -74,6 +74,7 @@
       /><br />
       <!-- <input type="text" id="sample3_extraAddress" placeholder="참고항목"> -->
 
+<<<<<<< HEAD
       <div
         id="wrap"
         style="
@@ -104,6 +105,19 @@
       <script>
         // 우편번호 찾기 찾기 화면을 넣을 element
         var element_wrap = document.getElementById("wrap");
+=======
+        <!-- 검색창 -->
+        <form class="form-inline justify-content-md-center my-3 mx-3 col-12">
+          <div class="form-group col-12 justify-content-md-center">
+            <!--<input type="text" id="sample3_postcode" placeholder="우편번호">-->
+            <input type="text" class="form-control col-6" id="sample3_address" placeholder="어디로 배달해 드릴까요?" readonly><br>
+            <input type="button" class="btn btn-info" onclick="sample3_execDaumPostcode()" value="검색"><br>
+            <!-- <input type="text" id="sample3_detailAddress" placeholder="상세주소"> -->
+            <!-- <input type="text" id="sample3_extraAddress" placeholder="참고항목"> -->
+            <div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
+            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+            </div>
+>>>>>>> master
 
         function foldDaumPostcode() {
           // iframe을 넣은 element를 안보이게 한다.
