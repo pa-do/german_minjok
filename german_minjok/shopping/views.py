@@ -1,9 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
 import requests
+
 from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import get_user_model
 
 from carton.cart import Cart
-from ceos.models import StoreMenu, Store
+from accounts.models import UserLocation
+from ceos.models import StoreMenu, Store, OrderList
 
 
 def menu(request, store_pk):
@@ -20,8 +23,30 @@ def menu(request, store_pk):
 def add_product(request):
     cart = Cart(request.session)
     menu = get_object_or_404(StoreMenu, pk=request.GET.get('menu'))
+    print(cart.cart_serializable)
+    for item in cart.items:
+        old_store_pk = item.product.store.pk
+        if old_store_pk != menu.store.pk:
+            context = {
+                'message': 'WARNING',
+                'total': cart.total,
+            }
+            return JsonResponse(context)
     cart.add(menu, price=menu.menu_price)
     context = {
+        'message': 'OK',
+        'total': cart.total,
+    }
+    return JsonResponse(context)
+
+
+def clear_add(request):
+    cart = Cart(request.session)
+    menu = get_object_or_404(StoreMenu, pk=request.GET.get('menu'))
+    cart.clear()
+    cart.add(menu, price=menu.menu_price)
+    context = {
+        'message': 'OK',
         'total': cart.total,
     }
     return JsonResponse(context)
@@ -38,6 +63,8 @@ def minus_product(request):
 
 
 def show_cart(request):
+    User = get_user_model()
+    user = get_object_or_404(User, pk=request.user.pk)
     current_site = request.build_absolute_uri()[:-10]
     cart = Cart(request.session)
     cnt = 0
@@ -45,13 +72,30 @@ def show_cart(request):
     status = 0
     for item in cart.items:
         cnt += 1
-        if cnt == 0:
-            cart_item = '{}'.format(item.product.name)
+        # 가게 고유 번호
+        store_pk = item.product.store.pk
+        if cnt == 1:
+            cart_item = '{}'.format(item.product.menu_name)
             status = 1
     if cnt > 1:
         cart_item += '외 {}건'.format(cnt-1)
-
     if request.method == "POST":    # 버튼 누르면
+        '''
+        ---------제안----------
+        1. 결제 버튼 누르면 OrderList 생성한다.
+        2. 결제가 완료되면 order_condition을 1로(결제 대기 == 0) 변경한다.
+        3. params는 수정 안 했고, 요청에 필요한 정보는 다 땡겨온듯함.
+        '''
+        user_location = get_object_or_404(UserLocation, user=user)
+        store = get_object_or_404(Store, pk=store_pk)
+        order_list = OrderList.objects.create(
+            user = user,
+            store = store,
+            order_condition = 0,
+            order_location = user_location.location,
+            order_name = user.username + store.store_name,  # 유저이름 + 가게이름: 의미 없는 문자열
+            order_price = cart.total  # 장바구니의 총 가격
+        )
         URL = 'https://kapi.kakao.com/v1/payment/ready'
         headers = {
             "Authorization": "KakaoAK " + "965c38ccc1d83d33c9577c0b870eb506",   # 변경불가
@@ -70,7 +114,7 @@ def show_cart(request):
             "cancel_url": "{}kakaopay/cancel/".format(current_site),               # 결제 취소 시 이동할 url
             "fail_url": "{}kakaopay/fail/".format(current_site),                 # 결제 실패 시 이동할 url
         }
-
+        cart.clear()
         res = requests.post(URL, headers=headers, params=params)
         request.session['tid'] = res.json()['tid']  # 결제 승인시 사용할 tid를 세션에 저장
         next_url = res.json()['next_redirect_pc_url']  # 결제 페이지로 넘어갈 url을 저장

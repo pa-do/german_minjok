@@ -4,19 +4,38 @@
 {% get_cart as cart %}
 
 {% block content %}
-<!--비동기 요청으로 체크된 항목들 장바구니로 날리겠습니다.-->
     {% for menu in menu_list %}
         <h5>{{ menu.menu_name }}</h5>
         <p>{{ menu.menu_info }}</p>
         <span>{{ menu_price }}</span>
         <div class="btn-group btn-group-sm" role="group">
-            <button data-menu="{{ menu.pk }}"  id="minusBtn" type="button" class="btn btn-light btn-group-sm">-</button>
-            <input id="cnt-{{ product.pk }}" type="button" class="btn btn-outline-secondary btn-group-sm" value="0" readonly>
-            <button data-menu="{{ menu.pk }}" id="plusBtn" type="button" class="btn btn-light btn-group-sm">+</button>
+            <button data-menu="{{ menu.pk }}"  type="button" class="btn btn-light btn-group-sm minusBtn">-</button>
+            <input id="cnt-{{ menu.pk }}" type="button" class="btn btn-outline-secondary btn-group-sm" value="0" readonly>
+            <button data-menu="{{ menu.pk }}" type="button" class="btn btn-light btn-group-sm plusBtn">+</button>
         </div>
     {% endfor %}
     <button id="submitBtn"><span class="badge badge-light">{{ cart.total }}</span>주문하기</button>
     
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">장바구니에 담기</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                다른 음식점에서 이미 담은 메뉴가 있습니다. 담긴 메뉴를 취소하고 새로운 음식점에서 메뉴를 담을까요?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-danger" id="clearAddBtn">확인</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         const minusBtnList = document.querySelectorAll('.minusBtn')
@@ -30,7 +49,7 @@
                     }
                 })
                  .then(function(res){
-                     console.log('minusBtn')
+                    //  console.log('minusBtn')
                      const countText = document.querySelector(`#cnt-${ menuPk }`)
                      if (countText.value > 0) {
                          newCount = Number(countText.value) - 1
@@ -46,16 +65,37 @@
         plusBtnList.forEach(function(plusBtn){
             plusBtn.addEventListener('click', function(event){
                 const menuPk = plusBtn.dataset.menu
+                // console.log(menuPk)
                 axios.get('/cart/add/', {
                     params: {
                         menu: menuPk,
                     }
                 })
                  .then(function(res){
-                     console.log(res)
-                     const countText = document.querySelector(`#cnt-${ menuPk }`)
-                     newCount = Number(countText.value) + 1
-                     countText.value = newCount
+                    //  console.log(res)
+                     if (res.data.message === 'WARNING') {
+                        // console.log('warn')
+                        $('#staticBackdrop').modal('show');
+                        const clearAddBtn = document.querySelector('#clearAddBtn')
+                        clearAddBtn.addEventListener('click', function(event){
+                            axios.get('/cart/clear-add/', {
+                                params: {
+                                    menu: menuPk,
+                                }
+                            })
+                             .then(function(res2){
+                                const countText = document.querySelector(`#cnt-${ menuPk }`)
+                                newCount = Number(countText.value) + 1
+                                countText.value = newCount
+                                $('#staticBackdrop').modal('hide');
+                             })
+                        })
+                     } else {
+                        const countText = document.querySelector(`#cnt-${ menuPk }`)
+                        // console.log(countText)
+                        newCount = Number(countText.value) + 1
+                        countText.value = newCount
+                    }
                  })
                  .catch(function(err){
                      console.log(err)

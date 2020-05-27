@@ -61,6 +61,8 @@ def consumer(request):
         user_location = UserLocation()
         user_location.user = user
         user_location.location = roadAdr + ' ' + detailAdr
+        user_location.location_basic = roadAdr
+        user_location.location_detail = detailAdr
         user_location.save()
         auth_login(request, user)
         return redirect('main:index')
