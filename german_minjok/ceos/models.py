@@ -37,7 +37,7 @@ class Store(models.Model):
 class OrderList(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET(get_sentinel_user))
     store = models.ForeignKey(Store, on_delete=models.SET(get_sentinel_store))
-    order_condition = models.IntegerField(default=0, choices=[(0, "신청"), (1, "준비"), (2, "완료")])
+    order_condition = models.IntegerField(default=0, choices=[(0, "결제 대기"), (1, "결제 완료"), (2, "준비중"), (3, "완료")])
     order_location =  models.CharField(max_length=100)
     order_time = models.DateTimeField(auto_now_add=True)
     order_name = models.CharField(max_length=50)

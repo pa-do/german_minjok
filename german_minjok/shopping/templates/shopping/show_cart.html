@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
+{% block content %}
+
 {% load carton_tags %}
 {% get_cart as cart %}
-
-{% block content %}
 
 {% if status %}
   <div class="pt-3 row justify-content-center">
@@ -14,7 +14,7 @@
         <div class="my-3 row"><div class="h5 col-6">장소</div><div class="h6 col-6 text-right">주문 장소</div></div>
         <div class="my-3 row"><div class="h5 col-12">주문목록</div></div>
         {% for item in cart.items %}
-          <div class="h6 col-12 text-right">{{ item.product.name }} {{ item.quantity }}개</div>
+          <div class="h6 col-12 text-right">{{ item.product.menu_name }} {{ item.quantity }}개</div>
           <div class="h6 col-12 text-right">가격: {{ item.subtotal }}</div>
         {% endfor %}
         <div class="my-3 row"><div class="h5 col-6">결제 금액</div><div class="h6 col-6 text-right">{{ cart.total }}원</div></div>

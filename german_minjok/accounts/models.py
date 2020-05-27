@@ -13,6 +13,8 @@ class User(AbstractUser):
 class UserLocation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     location = models.CharField(max_length=100)
+    location_basic = models.CharField(max_length=100)
+    location_detail = models.CharField(max_length=100)
 
 class UserPhoneCheck(models.Model):
     phone_number = models.CharField(verbose_name='휴대폰 번호', primary_key=True, max_length=11)
