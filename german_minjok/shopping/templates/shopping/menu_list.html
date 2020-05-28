@@ -43,7 +43,7 @@
             minusBtn.addEventListener('click', function(event){
                 const menuPk = minusBtn.dataset.menu
                 // console.log(menuPk)
-                axios.get('/cart/remove/', {
+                axios.get('/cart/minus/', {
                     params: {
                         menu: menuPk,
                     }
