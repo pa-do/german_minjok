@@ -8,14 +8,18 @@
 {% if status %}
   <div class="pt-3 row justify-content-center">
     <h2 class="text-center my-5 col-12">장바구니</h2>
-    <div class="col-4 p-5 bg-light">
-      <h3 class="text-center my-5">가게 이름</h3>
+    <div class="p-5 bg-light" style="width: 30rem;">
+      <h3 class="text-center my-5">{{ store }}</h3>
       <div>
-        <div class="my-3 row"><div class="h5 col-6">장소</div><div class="h6 col-6 text-right">주문 장소</div></div>
+        <div class="my-3 row"><div class="h5 col-6">장소</div><div class="h6 col-6 text-right">{{ location }}</div></div>
         <div class="my-3 row"><div class="h5 col-12">주문목록</div></div>
         {% for item in cart.items %}
-          <div class="h6 col-12 text-right">{{ item.product.menu_name }} {{ item.quantity }}개</div>
-          <div class="h6 col-12 text-right">가격: {{ item.subtotal }}</div>
+        <div class="row">
+          <div class="h6 col-6 text-left">{{ item.product.menu_name }}</div>
+          <div class="h6 col-6 text-right">{{ item.quantity }}개</div>
+        </div>
+          <div class="h6 col-12 text-right p-0">{{ item.subtotal }}원</div>
+          <hr>
         {% endfor %}
         <div class="my-3 row"><div class="h5 col-6">결제 금액</div><div class="h6 col-6 text-right">{{ cart.total }}원</div></div>
       </div>
@@ -31,6 +35,9 @@
 {% else %}
 <div class="mt-5 pt-5 row justify-content-center">
   <h2 class="text-center my-5 col-12">장바구니가 비었어요</h2>
+  <div class="mt-5 pt-3 text-center">
+    <a href="{% url 'main:index' %}" class="btn btn-warning">메인으로 돌아가기</a>
+  </div>
 </div>
 {% endif %}
 

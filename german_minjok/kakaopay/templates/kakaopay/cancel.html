@@ -2,6 +2,8 @@
 {% block content %}
   <div class="text-center mt-5 pt-5">
     <h2 class="my-5 pt-5">결제가 취소되었습니다.</h2>
-    <a href="#" class="btn btn-warning">메인으로 돌아가기</a>
+    <div class="mt-5 pt-3 text-center">
+      <a href="{% url 'main:index' %}" class="btn btn-warning">메인으로 돌아가기</a>
+    </div>
   </div>
 {% endblock %}

@@ -70,13 +70,21 @@ def show_cart(request):
     cnt = 0
     cart_item = 'none'
     status = 0
+    store_pk = -1
+    location = ''
+    store = ''
     for item in cart.items:
         cnt += 1
-        # 가게 고유 번호
-        store_pk = item.product.store.pk
         if cnt == 1:
             cart_item = '{}'.format(item.product.menu_name)
             status = 1
+            # 가게 고유 번호
+            store_pk = item.product.store.pk
+    if status:
+        user_location = get_object_or_404(UserLocation, user=user)
+        store = get_object_or_404(Store, pk=store_pk)
+        location = user_location.location
+        store = store.store_name
     if cnt > 1:
         cart_item += '외 {}건'.format(cnt-1)
     if request.method == "POST":    # 버튼 누르면
@@ -86,7 +94,7 @@ def show_cart(request):
         2. 결제가 완료되면 order_condition을 1로(결제 대기 == 0) 변경한다.
         3. params는 수정 안 했고, 요청에 필요한 정보는 다 땡겨온듯함.
         '''
-        user_location = get_object_or_404(UserLocation, user=user)
+        user_location = get_object_or_404(UserLocation, user=user)      # 84~85 중복
         store = get_object_or_404(Store, pk=store_pk)
         order_list = OrderList.objects.create(
             user = user,
@@ -103,12 +111,11 @@ def show_cart(request):
         }
         params = {
             "cid": "TC0ONETIME",    # 변경불가. 실제로 사용하려면 카카오와 가맹을 맺어야함. 현재 코드는 테스트용 코드
-            "partner_order_id": "{}_{}".format(1, 1),     # 주문번호 (스토어 번호_주문 번호)
-            "partner_user_id": "{}".format(request.user),    # 유저 아이디
+            "partner_order_id": "{}_{}".format(store_pk, order_list.pk),     # 주문번호 (스토어 번호_주문 번호)
+            "partner_user_id": "{}".format(user),    # 유저 아이디
             "item_name": "{}".format(cart_item),        # 구매 물품 이름
             "quantity": "{}".format(cnt),                # 구매 물품 수량
-            "total_amount": "{}".format(1),        # 구매 물품 가격
-            # "total_amount": "{}".format(cart.total),  # 구매 물품 가격
+            "total_amount": "{}".format(cart.total),  # 구매 물품 가격
             "tax_free_amount": "0",         # 구매 물품 비과세 (0으로 고정)
             "approval_url": "{}kakaopay/approval/".format(current_site),    # 결제 성공 시 이동할 url
             "cancel_url": "{}kakaopay/cancel/".format(current_site),               # 결제 취소 시 이동할 url
@@ -117,11 +124,14 @@ def show_cart(request):
         cart.clear()
         res = requests.post(URL, headers=headers, params=params)
         request.session['tid'] = res.json()['tid']  # 결제 승인시 사용할 tid를 세션에 저장
+        request.session['order_id'] = "{}_{}".format(store_pk, order_list.pk)   # 112줄과 동일
         next_url = res.json()['next_redirect_pc_url']  # 결제 페이지로 넘어갈 url을 저장
         return redirect(next_url)
 
     context = {
-        'status': status
+        'status': status,
+        'location': location,
+        'store': store,
     }
 
     return render(request, 'shopping/show_cart.html', context)
