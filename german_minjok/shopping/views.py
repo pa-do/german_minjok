@@ -3,6 +3,7 @@ import requests
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 from carton.cart import Cart
 from accounts.models import UserLocation
@@ -62,6 +63,7 @@ def minus_product(request):
     return JsonResponse(context)
 
 
+@login_required
 def show_cart(request):
     User = get_user_model()
     user = get_object_or_404(User, pk=request.user.pk)

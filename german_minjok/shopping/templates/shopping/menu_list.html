@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 
+{% block content %}
 {% load carton_tags %}
 {% get_cart as cart %}
 
-{% block content %}
     {% for menu in menu_list %}
         <h5>{{ menu.menu_name }}</h5>
         <p>{{ menu.menu_info }}</p>
-        <span>{{ menu_price }}</span>
+        <span>{{ menu.menu_price }} 원</span>
         <div class="btn-group btn-group-sm" role="group">
             <button data-menu="{{ menu.pk }}"  type="button" class="btn btn-light btn-group-sm minusBtn">-</button>
             <input id="cnt-{{ menu.pk }}" type="button" class="btn btn-outline-secondary btn-group-sm" value="0" readonly>
             <button data-menu="{{ menu.pk }}" type="button" class="btn btn-light btn-group-sm plusBtn">+</button>
         </div>
+        <hr>
     {% endfor %}
-    <button id="submitBtn"><span class="badge badge-light">{{ cart.total }}</span>주문하기</button>
+    <br>
+    <a href="{% url 'shopping:show_cart' %}" id="submitBtn" class="btn btn-info"><span id="spanTotal" class="badge badge-light">{{ cart.total }}</span>주문하기</a>
     
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -55,6 +57,7 @@
                          newCount = Number(countText.value) - 1
                          countText.value = newCount
                      }
+                     spanTotal.innerText = res.data.total
                  })
                  .catch(function(err){
                      console.log(err)
@@ -65,6 +68,7 @@
         plusBtnList.forEach(function(plusBtn){
             plusBtn.addEventListener('click', function(event){
                 const menuPk = plusBtn.dataset.menu
+                const spanTotal = document.querySelector('#spanTotal')
                 // console.log(menuPk)
                 axios.get('/cart/add/', {
                     params: {
@@ -88,6 +92,7 @@
                                 newCount = Number(countText.value) + 1
                                 countText.value = newCount
                                 $('#staticBackdrop').modal('hide');
+                                spanTotal.innerText = res2.data.total
                              })
                         })
                      } else {
@@ -95,6 +100,7 @@
                         // console.log(countText)
                         newCount = Number(countText.value) + 1
                         countText.value = newCount
+                        spanTotal.innerText = res.data.total
                     }
                  })
                  .catch(function(err){
