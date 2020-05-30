@@ -24,7 +24,6 @@ def menu(request, store_pk):
 def add_product(request):
     cart = Cart(request.session)
     menu = get_object_or_404(StoreMenu, pk=request.GET.get('menu'))
-    print(cart.cart_serializable)
     for item in cart.items:
         old_store_pk = item.product.store.pk
         if old_store_pk != menu.store.pk:
@@ -34,9 +33,13 @@ def add_product(request):
             }
             return JsonResponse(context)
     cart.add(menu, price=menu.menu_price)
+    quantity = cart.cart_serializable[str(menu.pk)]['quantity']
+    price = cart.cart_serializable[str(menu.pk)]['price']
     context = {
         'message': 'OK',
         'total': cart.total,
+        'quantity': quantity,
+        'sub_total': int(quantity) * int(price),
     }
     return JsonResponse(context)
 
@@ -57,8 +60,17 @@ def minus_product(request):
     cart = Cart(request.session)
     menu = get_object_or_404(StoreMenu, pk=request.GET.get('menu'))
     cart.remove_single(menu)
+    print(cart.cart_serializable)
+    try:
+        quantity = cart.cart_serializable[str(menu.pk)]['quantity']
+        price = cart.cart_serializable[str(menu.pk)]['price']
+    except:
+        quantity = 0
+        price = 0
     context = {
         'total': cart.total,
+        'quantity': quantity,
+        'sub_total': int(quantity) * int(price),
     }
     return JsonResponse(context)
 
