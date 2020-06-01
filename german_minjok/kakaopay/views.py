@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 import requests
 
-from carton.cart import Cart
+from ceos.models import OrderList
 
 # Create your views here.
 
 def approval(request):
-    # order_list = OrderList.objects.filter(user=request.user).filter(order_condition=0)[0]
-    # cart = Cart(request.session)
+    order_list = OrderList.objects.filter(user=request.user).filter(order_condition=0)[0]
+    order_list.order_condition = 1
+    order_list.save()
+
     URL = 'https://kapi.kakao.com/v1/payment/approve'
     headers = {
         "Authorization": "KakaoAK " + "965c38ccc1d83d33c9577c0b870eb506",   # 변경불가
