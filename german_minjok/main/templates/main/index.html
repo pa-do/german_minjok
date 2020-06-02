@@ -52,26 +52,19 @@
   <!-- 주소 검색창 -->
   <form class="form-inline justify-content-md-center my-3 mx-3 col-12" id="adr">
     <div class="form-group col-12 justify-content-md-center">
-      <!--<input type="text" id="sample3_postcode" placeholder="우편번호">-->
+      {% if user.is_authenticated %}
       <input
-        type="text"
-        class="form-control col-4"
-        id="address"
-        placeholder="어디로 배달해 드릴까요?"
-        readonly
-      /><br />
+        type="text" class="form-control col-4" id="address" placeholder="{{ adr }}" value="{{ adr }}" readonly/><br />
       <input
-        type="text"
-        class="form-control col-2"
-        id="detailAddress"
-        placeholder="상세주소"
-      />
+        type="text" class="form-control col-2" id="detailAddress" placeholder="{{ dadr }}" value="{{ dadr }}"/>
+      {% else %}
       <input
-        type="button"
-        class="btn btn-info"
-        onclick="sample3_execDaumPostcode()"
-        value="주소 검색"
-      /><br />
+        type="text" class="form-control col-4" id="address" placeholder="어디로 배달해 드릴까요?" readonly/><br />
+      <input
+        type="text" class="form-control col-2" id="detailAddress" placeholder="상세주소" />
+      {% endif %}
+      <input
+        type="button" class="btn btn-info" onclick="sample3_execDaumPostcode()" value="주소 검색" /><br />
       <!-- <input type="text" id="sample3_extraAddress" placeholder="참고항목"> -->
 
       <div
@@ -262,6 +255,15 @@
   </div>
 
   <script>
+
+    window.onload = function(){
+      var adr = sessionStorage.getItem('adr')
+      if (adr != null) {
+        document.getElementById("address").value = adr;
+        document.getElementById("detailAddress").value = sessionStorage.getItem('dadr')
+        }
+      }
+
     function setSession(category) {
       if (window.sessionStorage) {
         adr = document.getElementById("address").value;
