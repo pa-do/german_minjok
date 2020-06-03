@@ -96,8 +96,11 @@ def show_cart(request):
             store_pk = item.product.store.pk
     if status:
         user_location = get_object_or_404(UserLocation, user=user)
+        #dp user_location = request.COOKIES['adr'] + ' ' +  request.COOKIES['dadr']
+        print(user_location)
         store = get_object_or_404(Store, pk=store_pk)
         location = user_location.location
+        #dp location = user_location
         store = store.store_name
     if cnt > 1:
         cart_item += '외 {}건'.format(cnt-1)

@@ -268,11 +268,15 @@
       if (window.sessionStorage) {
         adr = document.getElementById("address").value;
         if (adr != "") {
+          dadr = document.getElementById("detailAddress").value;
           sessionStorage.setItem("adr", adr);
-          sessionStorage.setItem(
-            "dadr",
-            document.getElementById("detailAddress").value
-          );
+          sessionStorage.setItem("dadr",dadr);
+          // cookie
+          var date = new Date();
+          date.setTime(date.getTime() + 1 * 60 * 60 * 24 * 1000)  // 1일간 쿠키에 저장, 제일 앞의 숫자 변경하면 됨
+          document.cookie = 'adr' + '=' + adr + ';expires=' + date.toUTCString() + ';path=/';
+          document.cookie = 'dadr' + '=' + dadr + ';expires=' + date.toUTCString() + ';path=/';
+          //
           window.location.href = "/main/" + category + "/temp";
         }
       }

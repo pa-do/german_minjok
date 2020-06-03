@@ -25,4 +25,10 @@ def temp(request, category):
         'category': category,
         'stores': stores,
     }
+    # test cookie
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+    print(request.COOKIES['adr'])
+    print(request.COOKIES['dadr'])
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+    #
     return render(request, 'main/temp.html', context)
