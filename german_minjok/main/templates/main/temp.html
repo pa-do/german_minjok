@@ -29,9 +29,17 @@
   function getSession() {
       var adr = sessionStorage.getItem('adr');
       var dadr = sessionStorage.getItem('dadr');
-      console.log(adr);
-      console.log(dadr);
-      console.log(type(adr));
+      // console.log(adr);
+      // console.log(dadr);
+      // console.log(type(adr));
+      // cookie
+      // var cookie_adr = document.cookie.match('(^|;) ?' + adr + '=([^;]*)(;|$)');
+      var c_adr = /adr=([^;]*)/.test(document.cookie) ? unescape(RegExp.$1) : '';
+      var c_dadr = /dadr=([^;]*)/.test(document.cookie) ? unescape(RegExp.$1) : '';
+      // console.log(c_adr);
+      // console.log(c_dadr);
+      // console.log(document.cookie)
+      //
   }
 </script>
 
