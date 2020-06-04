@@ -22,7 +22,9 @@ def stores(request, category):
         stores = Store.objects.filter(store_cartegory=category)
     else:
         stores = Store.objects.all()
+
     category_name = ['한식', '중식', '일식', '피자', '치킨', '전체']
+
     context = {
         'category': category,
         'stores': stores,
