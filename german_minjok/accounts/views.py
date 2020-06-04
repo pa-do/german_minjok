@@ -17,38 +17,37 @@ from ceos.forms import StoreForm
 from .models import UserLocation, UserPhoneCheck
 from .forms import UserForm
 from . import _keys
-# Create your views here.
+
 
 def signup_div(request):
     if request.user.is_authenticated:
         return redirect('main:index')
-    if request.method == "POST":
+    if request.method == 'POST':
         user_code = request.POST.get('user-code')
         user_form = UserForm()
-        if user_code == "소비자":
+        if user_code == '소비자':
             context = {
                 'user_code': user_code,
                 'user_form': user_form,
             }
             return render(request, 'accounts/form.html', context)
-        elif user_code == "판매자":
-            store_form = StoreForm()
+        elif user_code == '판매자':
             context = {
                 'user_code': user_code,
                 'user_form': user_form,
-                'store_form': store_form,
             }
-            return render(request, 'accounts/form_manager.html', context)
+            return render(request, 'accounts/form.html', context)
         else:
             return redirect('accounts:div')
     else:
         return render(request, 'accounts/signup.html')
 
+
 @require_POST
-def consumer(request):
+def signup(request):
     if request.user.is_authenticated:
         return redirect('main:index')
-    user_code = "소비자"
+    user_code = request.POST.get('user_code')
     user_form = UserForm(request.POST)
     phone_number = request.POST.get('phone_number')
     roadAdr = request.POST.get('roadAddress')
@@ -56,7 +55,10 @@ def consumer(request):
     if user_form.is_valid() and phone_number != '' and roadAdr != '' and detailAdr != '':
         user = user_form.save(commit=False)
         user.phone_number = phone_number
-        user.auth_code = 1
+        if user_code == '소비자':
+            user.auth_code = 1
+        elif user_code == '판매자':
+            user.auth_code = 2
         user.save()
         user_location = UserLocation()
         user_location.user = user
@@ -71,32 +73,6 @@ def consumer(request):
         'user_form': user_form,
     }
     return render(request, 'accounts/form.html', context)
-
-
-@require_POST
-def manager(request):
-    if request.user.is_authenticated:
-        return redirect('main:index')
-    user_code = "판매자"
-    user_form = UserForm(request.POST)
-    store_form = StoreForm(request.POST, request.FILES)
-    phone_number = request.POST.get('phone_number')
-    if user_form.is_valid() and store_form.is_valid() and phone_number != '':
-        user = user_form.save(commit=False)
-        user.phone_number = phone_number
-        user.auth_code = 2
-        user.save()
-        store = store_form.save(commit=False)
-        store.manager = user
-        store.save()
-        auth_login(request, user)
-        return redirect('main:index')
-    context = {
-        'user_code': user_code,
-        'user_form': user_form,
-        'store_form': store_form,
-    }
-    return render(request, 'accounts/form_manager.html', context)
 
 
 def phone(request, phone_num):
@@ -146,6 +122,7 @@ def phone(request, phone_num):
     }
     return JsonResponse(context)
 
+
 def phone_auth(request, phone_num, auth_num):
     result = UserPhoneCheck.objects.filter(
         phone_number=phone_num,
@@ -176,9 +153,9 @@ def login(request):
     }
     return render(request, 'accounts/login.html', context)
 
+
 @login_required
 def logout(request):
     auth_logout(request)
-
     return redirect('main:index')
 

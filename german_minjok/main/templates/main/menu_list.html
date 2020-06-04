@@ -3,20 +3,44 @@
 {% block content %}
 {% load carton_tags %}
 {% get_cart as cart %}
-
-    {% for menu in menu_list%}
-        <h5>{{ menu.menu_name }}</h5>
-        <p>{{ menu.menu_info }}</p>
-        <span>{{ menu.menu_price }} 원</span>
-        <div class="btn-group btn-group-sm" role="group">
-            <button data-menu="{{ menu.pk }}"  type="button" class="btn btn-light btn-group-sm minusBtn">-</button>
-            <input id="cnt-{{ menu.pk }}" type="button" class="btn btn-outline-secondary btn-group-sm" value="0" readonly>
-            <button data-menu="{{ menu.pk }}" type="button" class="btn btn-light btn-group-sm plusBtn">+</button>
+    <h2 class="mt-3 ml-3">{{ store.store_name }}</h2>
+    <div class="card m-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+        <img src="{{ store.store_image.url }}" class="card-img" alt="...">
         </div>
-        <hr>
+        <div class="col-md-8">
+        <div class="card-body">
+            <p class="card-text">주소 : {{ store.store_location }}</p>
+            <p class="card-text"><small class="text-muted">가게 전화번호 : {{ store.store_phone }}</small></p>
+        </div>
+        </div>
+    </div>
+    </div>
+    <hr>
+    {% for menu in menu_list%}
+    <div class="card m-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="{{ menu.menu_image.url }}" class="card-img" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5>{{ menu.menu_name }}</h5>
+                    <p>{{ menu.menu_info }}</p>
+                    <span>{{ menu.menu_price }} 원</span>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button data-menu="{{ menu.pk }}"  type="button" class="btn btn-light btn-group-sm minusBtn">-</button>
+                        <input id="cnt-{{ menu.pk }}" type="button" class="btn btn-outline-secondary btn-group-sm" value="0" readonly>
+                        <button data-menu="{{ menu.pk }}" type="button" class="btn btn-light btn-group-sm plusBtn">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {% endfor %}
     <br>
-    <a href="{% url 'shopping:show_cart' %}" id="submitBtn" class="btn btn-info"><span id="spanTotal" class="badge badge-light">{{ cart.total }}</span>주문하기</a>
+    <a href="{% url 'shopping:show_cart' %}" id="submitBtn" class="btn btn-info ml-3"><span id="spanTotal" class="badge badge-light">{{ cart.total }}</span>주문하기</a>
     
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">

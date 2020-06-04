@@ -10,17 +10,6 @@ from accounts.models import UserLocation
 from ceos.models import StoreMenu, Store, OrderList
 
 
-def menu(request, store_pk):
-    store = get_object_or_404(Store, pk=store_pk)
-    menu_list = store.storemenu_set.all()
-    print(store, menu_list)
-    context = {
-        'menu_list': menu_list,
-        'store': store,
-    }
-    return render(request, 'shopping/menu_list.html', context)
-
-
 def add_product(request):
     cart = Cart(request.session)
     menu = get_object_or_404(StoreMenu, pk=request.GET.get('menu'))

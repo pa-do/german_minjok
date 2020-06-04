@@ -1,20 +1,25 @@
 {% extends 'base.html' %}
 
+{% load bootstrap4 %}
 {% block content %}
-    <form action="{% url 'accounts:consumer' %}" id="consumerForm" method="POST">
+    <form class="w-50 mt-5 ml-auto mr-auto" action="{% url 'accounts:signup' %}" id="consumerForm" method="POST">
         {% csrf_token %}
-        {{ user_form.as_p }}
+        <input type="text" value="{{ user_code }}" name="user_code" style="display:none;" readonly>
+        {% bootstrap_form user_form %}
         <div id="phoneGroup">
-            <label for="phoneNum">연락처: <input id="phoneNum" name="phone_number" placeholder="휴대폰 번호 입력(- 제외)" type="text"></label>
+            <p>핸드폰</p>
+            <label for="phoneNum"><input id="phoneNum" name="phone_number" placeholder="휴대폰 번호 입력(- 제외)" type="text"></label>
             <input type="button" id="phoneBtn" class="btn btn-light" value="인증하기">
             <label for="authNum"><input id="authNum" placeholder="인증번호 입력" type="text"></label>
             <input type="button" id="authBtn" class="btn btn-light" value="인증">
         </div>
-        <div id="addrGroup">
+        <div id="addrGroup" class="mb-5">
         <p>주소</p>
-            <input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
-            <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
-            <input type="button" id="findBtn" value="우편번호 찾기"><br>
+            <div class="d-flex">
+                <input class="form-control" type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
+                <input class="form-control" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
+                <input class="btn btn-info"type="button" id="findBtn" value="우편번호 찾기"><br>
+            </div>
         </div>
         <button class="btn btn-primary submitBtn">회원가입</button>
     </form>

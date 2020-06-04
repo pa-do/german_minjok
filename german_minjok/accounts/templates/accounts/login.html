@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
+{% load bootstrap4 %}
 {% block content %}
-    <form action="" method="POST">
+    <form class="w-50 mt-5 mr-auto ml-auto" action="" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button>로그인</button>
+        {% bootstrap_form form %}
+        <input type="submit" class="btn btn-primary" value="로그인"/>
+        <a href="{% url 'accounts:div' %}" class="btn btn-info">회원가입</a>
     </form>
 {% endblock %}

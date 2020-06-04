@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>회원가입</h2>
-    <form action="" method="POST" id="divForm">
+    <h2 class="text-center mt-5">회원가입</h2>
+    <form action="" method="POST" id="divForm" class="mr-auto ml-auto w-50">
         {% csrf_token %}
-        <div style="overflow:scroll; width:500px; height:150px;">약관이 들어가는 공간</div>
-        <label for="agree1"><input class="agreeCheck" id="agree1" type="checkbox">동의합니다</label>
         <label for="agreeAll"><input id="agreeAll" type="checkbox">모두 동의합니다</label>
-        <div style="overflow:scroll; width:500px; height:150px;">약관이 들어가는 공간</div>
+        <div class="border border-dark" style="overflow:scroll; width:500px; height:150px;">약관이 들어가는 공간</div>
+        <label for="agree1"><input class="agreeCheck" id="agree1" type="checkbox">동의합니다</label>
+        <div class="border border-dark" style="overflow:scroll; width:500px; height:150px;">약관이 들어가는 공간</div>
         <label for="agree2"><input class="agreeCheck" id="agree2" type="checkbox">동의합니다</label>
-        <div style="overflow:scroll; width:500px; height:150px;">약관이 들어가는 공간</div>
+        <div class="border border-dark" style="overflow:scroll; width:500px; height:150px;">약관이 들어가는 공간</div>
         <label for="agree3"><input class="agreeCheck" id="agree3" type="checkbox">동의합니다</label>
         <div>
             <label for="consumer"><input id="consumer" type="radio" name="user-code" value="소비자" checked="checked"> 소비자</label>
-            <label for="manager"><input id="manager" type="radio" name="user-code" value="판매자"> 판매자</label>
+            <label class="ml-5" for="manager"><input id="manager" type="radio" name="user-code" value="판매자"> 판매자</label>
         </div>
         <button id="sbmBtn">가입하기</button>
     </form>
