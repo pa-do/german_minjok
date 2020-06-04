@@ -181,7 +181,7 @@
   <!-- cards -->
   <div class="row row-cols-1 row-cols-md-3 col-8 mx-auto">
     <div class="col mb-4">
-      <div class="card" onclick="setSession(5)">
+      <div class="card" onclick="setSession(5)" style="cursor: pointer">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -193,7 +193,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(0)">
+      <div class="card" onclick="setSession(0)" style="cursor: pointer">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -205,7 +205,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(1)">
+      <div class="card" onclick="setSession(1)" style="cursor: pointer">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -217,7 +217,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(2)">
+      <div class="card" onclick="setSession(2)" style="cursor: pointer">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -229,7 +229,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(3)">
+      <div class="card" onclick="setSession(3)" style="cursor: pointer">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -241,7 +241,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(4)">
+      <div class="card" onclick="setSession(4)" style="cursor: pointer">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -276,8 +276,8 @@
           date.setTime(date.getTime() + 1 * 60 * 60 * 24 * 1000)  // 1일간 쿠키에 저장, 제일 앞의 숫자 변경하면 됨
           document.cookie = 'adr' + '=' + adr + ';expires=' + date.toUTCString() + ';path=/';
           document.cookie = 'dadr' + '=' + dadr + ';expires=' + date.toUTCString() + ';path=/';
-          
-          window.location.href = "/main/" + category + "/temp";
+
+          window.location.href = "/main/" + category + "/stores";
         }
       }
     }
