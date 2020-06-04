@@ -18,7 +18,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from main import views
+
 urlpatterns = [
+    path('', views.index),
     path('admin/', admin.site.urls),
     path('ceos/', include('ceos.urls')),
     path('maps/', include('maps.urls')),
