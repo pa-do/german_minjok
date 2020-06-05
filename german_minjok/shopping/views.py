@@ -122,7 +122,7 @@ def show_cart(request):
             "cancel_url": "{}kakaopay/cancel/".format(current_site),               # 결제 취소 시 이동할 url
             "fail_url": "{}kakaopay/fail/".format(current_site),                 # 결제 실패 시 이동할 url
         }
-        cart.clear()
+
         res = requests.post(URL, headers=headers, params=params)
         request.session['tid'] = res.json()['tid']  # 결제 승인시 사용할 tid를 세션에 저장
         request.session['order_id'] = "{}_{}".format(store_pk, order_list.pk)   # 112줄과 동일
