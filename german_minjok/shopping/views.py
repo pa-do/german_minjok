@@ -90,12 +90,6 @@ def show_cart(request):
     if cnt > 1:
         cart_item += '외 {}건'.format(cnt-1)
     if request.method == "POST":    # 버튼 누르면
-        '''
-        ---------제안----------
-        1. 결제 버튼 누르면 OrderList 생성한다.
-        2. 결제가 완료되면 order_condition을 1로(결제 대기 == 0) 변경한다.
-        3. params는 수정 안 했고, 요청에 필요한 정보는 다 땡겨온듯함.
-        '''
         store = get_object_or_404(Store, pk=store_pk)
         order_list = OrderList.objects.create(
             user = user,
@@ -122,7 +116,7 @@ def show_cart(request):
             "cancel_url": "{}kakaopay/cancel/".format(current_site),               # 결제 취소 시 이동할 url
             "fail_url": "{}kakaopay/fail/".format(current_site),                 # 결제 실패 시 이동할 url
         }
-        cart.clear()
+        # cart.clear() 적절한 위치로.
         res = requests.post(URL, headers=headers, params=params)
         request.session['tid'] = res.json()['tid']  # 결제 승인시 사용할 tid를 세션에 저장
         request.session['order_id'] = "{}_{}".format(store_pk, order_list.pk)   # 112줄과 동일

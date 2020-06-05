@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'main/style.css' %}" type="text/css" media="screen">
 <div class="container">
   <div class="row">
-    <div class="col-md-4 offset-md-4">
+    <div data-stores="{{ stores }}" id="storeData" class="col-md-4 offset-md-4">
       <h3 id="textbody" class="text-center my-5 pb-1"><span>{{ store_name }}</span></h3>
     </div>
   </div>
