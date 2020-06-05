@@ -84,9 +84,8 @@ def show_cart(request):
             # 가게 고유 번호
             store_pk = item.product.store.pk
     if status:
-        user_location = get_object_or_404(UserLocation, user=user)
         store = get_object_or_404(Store, pk=store_pk)
-        location = user_location.location
+        location = request.COOKIES['adr']+' '+request.COOKIES['dadr']
         store = store.store_name
     if cnt > 1:
         cart_item += '외 {}건'.format(cnt-1)
@@ -97,13 +96,12 @@ def show_cart(request):
         2. 결제가 완료되면 order_condition을 1로(결제 대기 == 0) 변경한다.
         3. params는 수정 안 했고, 요청에 필요한 정보는 다 땡겨온듯함.
         '''
-        user_location = get_object_or_404(UserLocation, user=user)      # 84~85 중복
         store = get_object_or_404(Store, pk=store_pk)
         order_list = OrderList.objects.create(
             user = user,
             store = store,
             order_condition = 0,
-            order_location = user_location.location,
+            order_location = request.COOKIES['adr']+' '+request.COOKIES['dadr'],
             order_name = user.username + store.store_name,  # 유저이름 + 가게이름: 의미 없는 문자열
             order_price = cart.total  # 장바구니의 총 가격
         )
