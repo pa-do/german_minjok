@@ -1,4 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>CEOS</h1>
+
+    <div class="card-deck row row-cols-1 row-cols-md-3 col-8 mx-auto">
+    {% for store in stores %}
+    <a href="{% url 'ceos:detail_store' store.pk %}" style="text-decoration: none; color: #000000;">
+    <div class="col mb-4">
+      <div class="card">
+        <img src="{{ store.store_image.url }}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ store.store_name }}</h5>
+        </div>
+      </div>
+    </div>
+    </a>
+    {% endfor %}
+
+    <a href="{% url 'ceos:create_store' %}" style="text-decoration: none; color: #000000;">
+      <div class="col mb-4">
+        <div class="card">
+          <!--<img src="..." class="card-img-top">-->
+          <div class="card-body">
+            <h5 class="card-title">가게 추가</h5>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    </div>
+
 {% endblock %}

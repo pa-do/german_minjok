@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% load bootstrap4 %}
+
+    {% if request.resolver_match.url_name == 'create_store' %}
+        <h1 class="text-center">가게 추가하기</h1>
+    {% else %}
+        <h1>가게 수정하기</h1>
+    {% endif %}
+
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form store_form %}
+        <button class="btn btn-primary">완료</button>
+    </form>
+
+
+{% endblock %}
