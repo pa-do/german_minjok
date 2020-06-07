@@ -6,12 +6,12 @@
     {% for order in orders %}
     {% if order.order_condition == 0 %}
     <hr>
-    <h1>아직 결제되지 않은 상품입니다.</h1>
+    <h5>아직 결제되지 않은 상품입니다.</h5>
     <hr>
     {% else %}
     <div id="card-{{ order.pk }}" class="card">
         {% if order.order_condition == 1 %}
-        <div id="headColor-{{ order.pk }}" class="card-header">
+        <div id="headColor-{{ order.pk }}" class="card-header font-weight-bold">
         {% endif %}
         {% if order.order_condition == 2 %}
         <div id="headColor-{{ order.pk }}" class="card-header bg-warning font-weight-bold">
