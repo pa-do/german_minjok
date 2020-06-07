@@ -19,3 +19,33 @@ h3 span {
   text-shadow: 0 13.36px 8.896px #c4b59d,0 -2px 1px #fff;
   letter-spacing: -4px;
 }
+
+a:link { color: black; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
+a:hover { color: black; text-decoration: none;}
+
+.c-style {
+  cursor: pointer;
+}
+
+.card-style {
+  max-width: 540px;
+  max-height: 200px;
+}
+
+.daum1 {
+  display: none;
+  border: 1px solid;
+  width: 500px;
+  height: 300px;
+  margin: 5px 0;
+  position: relative;
+}
+
+.daum2 {
+  cursor: pointer;
+  position: absolute;
+  right: 0px;
+  top: -1px;
+  z-index: 1;
+}

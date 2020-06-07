@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/style.css' %}" type="text/css" media="screen">
 <div>
   <!-- carousel -->
   <div
@@ -69,26 +72,11 @@
       <!-- <input type="text" id="sample3_extraAddress" placeholder="참고항목"> -->
 
       <div
-        id="wrap"
-        style="
-          display: none;
-          border: 1px solid;
-          width: 500px;
-          height: 300px;
-          margin: 5px 0;
-          position: relative;
-        "
-      >
+        id="wrap" class="daum1" >
         <img
+          class="daum2"
           src="//t1.daumcdn.net/postcode/resource/images/close.png"
           id="btnFoldWrap"
-          style="
-            cursor: pointer;
-            position: absolute;
-            right: 0px;
-            top: -1px;
-            z-index: 1;
-          "
           onclick="foldDaumPostcode()"
           alt="접기 버튼"
         />
@@ -182,7 +170,7 @@
   <!-- cards -->
   <div class="row row-cols-1 row-cols-md-3 col-8 mx-auto">
     <div class="col mb-4">
-      <div class="card" onclick="setSession(5)" style="cursor: pointer">
+      <div class="c-style card" onclick="setSession(5)">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -194,7 +182,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(0)" style="cursor: pointer">
+      <div class="c-style card" onclick="setSession(0)">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-05.png"
           class="card-img-top"
@@ -206,7 +194,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(1)" style="cursor: pointer">
+      <div class="c-style card" onclick="setSession(1)">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-04.png"
           class="card-img-top"
@@ -218,7 +206,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(2)" style="cursor: pointer">
+      <div class="c-style card" onclick="setSession(2)">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-06.png"
           class="card-img-top"
@@ -230,7 +218,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(3)" style="cursor: pointer">
+      <div class="c-style card" onclick="setSession(3)">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
           class="card-img-top"
@@ -242,7 +230,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(4)" style="cursor: pointer">
+      <div class="c-style card" onclick="setSession(4)">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-02.png"
           class="card-img-top"
