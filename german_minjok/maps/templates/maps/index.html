@@ -5,9 +5,19 @@
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=8wyuo7ilvu"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=8wyuo7ilvu&submodules=geocoder"></script>
 <script>
+var adr = sessionStorage.getItem('adr');
+var dadr = sessionStorage.getItem('dadr')
+searchAddressToCoordinate(adr);
+
+// 0.00318925‬ 1km 제한
+// var house = new naver.maps.LatLngBounds(
+//     new naver.maps.LatLng(37.2380651, 131.8562652),
+//     new naver.maps.LatLng(37.2444436, 131.8786475));
+
 var map = new naver.maps.Map("map", {
-  center: new naver.maps.LatLng(37.3595316, 127.1052133),
-  zoom: 15,
+  zoom: 16,
+  minZoom: 15,
+  // maxBounds: house,
   mapTypeControl: true
 });
 
@@ -95,7 +105,7 @@ function searchAddressToCoordinate(address) {
 
     infoWindow.setContent([
       '<div style="padding:10px;min-width:200px;line-height:150%;">',
-      '<h4 style="margin-top:5px;">배달 받으실 곳 : '+ address +'</h4>',
+      '<h4 style="margin-top:5px;">배달 받으실 곳 : '+ address + "번지 " + dadr +'</h4>',
       // htmlAddresses.join('<br />'),
       '</div>'
     ].join('\n'));
@@ -158,8 +168,6 @@ function initGeocoder() {
   // });
 
   // --------------------marker 관련---------------------
-  var adr = sessionStorage.getItem('adr');
-  searchAddressToCoordinate(adr);
   let stores = '{{ storesData|escapejs }}'
   // python/main/views/stores에서 storesData라는 이름으로 던진 것을 받아
   // 오브젝트배열로 변환하고 forEach로 각각 getAddressToCoordinate 를 실행합니다.
