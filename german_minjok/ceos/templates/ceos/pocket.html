@@ -37,6 +37,13 @@
 <script>
   axios.defaults.xsrfCookieName = 'csrftoken'
   axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+  let today = new Date();
+
+  getDay();
+  document.getElementById('selectedYear').value = today.getFullYear()
+  document.getElementById('selectedMonth').value = today.getMonth()+1
+  document.getElementById('selectedDay').value = today.getDate()
+  search();
 
   var getDayClick = document.getElementById('getDay');
   getDayClick.addEventListener('click', function(){
@@ -56,7 +63,6 @@
   });
 
   function createYear(parent) {
-    let today = new Date()
     var sel = document.createElement("select");
     sel.id = "selectedYear";
     for(var i=today.getFullYear(); i > 2018; i--) {
@@ -191,7 +197,6 @@
       var day = '1';
     }
     var standard = document.getElementById('dropdownMenuLink').text
-    console.log(year);
 
     axios.post('/ceos/pocket/calculator/', { params: {
         store_pk: {{ store.pk }},
