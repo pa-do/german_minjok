@@ -105,7 +105,6 @@ def orders(request, store_pk):
 def set_condition(request):
     data = json.loads(request.body.decode('utf-8'))
     order = get_object_or_404(OrderList, pk=data['params']['order_pk'])
-    print(data['params']['order_pk'])
     if is_manager(request.user, order.store):
         order_condition = data['params']['order_condition']
         order.order_condition = order_condition

@@ -40,7 +40,6 @@ def stores(request, category):
 def menu(request, store_pk):
     store = get_object_or_404(Store, pk=store_pk)
     menu_list = store.storemenu_set.all()
-    print(store, menu_list)
     context = {
         'menu_list': menu_list,
         'store': store,
