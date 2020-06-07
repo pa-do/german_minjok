@@ -54,14 +54,14 @@
     <div class="form-group col-12 justify-content-md-center">
       {% if user.is_authenticated %}
       <input
-        type="text" class="form-control col-4" id="address" placeholder="{{ adr }}" value="{{ adr }}" readonly/><br />
-      <input
-        type="text" class="form-control col-2" id="detailAddress" placeholder="{{ dadr }}" value="{{ dadr }}"/>
+        type="text" class="form-control col-4" id="address" placeholder="{{ adr }}" value="{{ adr }}" /><br />
+      <!--<input-->
+      <!--  type="text" class="form-control col-2" id="detailAddress" placeholder="{{ dadr }}" value="{{ dadr }}"/>-->
       {% else %}
       <input
-        type="text" class="form-control col-4" id="address" placeholder="어디로 배달해 드릴까요?" readonly/><br />
-      <input
-        type="text" class="form-control col-2" id="detailAddress" placeholder="상세주소" />
+        type="text" class="form-control col-4" id="address" placeholder="어디로 배달해 드릴까요?" /><br />
+      <!--<input-->
+      <!--  type="text" class="form-control col-2" id="detailAddress" placeholder="상세주소" />-->
       {% endif %}
       <input
         type="button" class="btn btn-info" onclick="sample3_execDaumPostcode()" value="주소 검색" /><br />
@@ -153,8 +153,9 @@
               // 우편번호와 주소 정보를 해당 필드에 넣는다.
               // document.getElementById('sample3_postcode').value = data.zonecode;
               document.getElementById("address").value = addr;
+              document.getElementById("address").focus();
               // 커서를 상세주소 필드로 이동한다.
-              document.getElementById("detailAddress").focus();
+              // document.getElementById("detailAddress").focus();
 
               // iframe을 넣은 element를 안보이게 한다.
               // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
@@ -268,15 +269,14 @@
       if (window.sessionStorage) {
         adr = document.getElementById("address").value;
         if (adr != "") {
-          dadr = document.getElementById("detailAddress").value;
+          // dadr = document.getElementById("detailAddress").value;
           sessionStorage.setItem("adr", adr);
-          sessionStorage.setItem("dadr",dadr);
+          // sessionStorage.setItem("dadr",dadr);
           // cookie
           var date = new Date();
           date.setTime(date.getTime() + 1 * 60 * 60 * 24 * 1000)  // 1일간 쿠키에 저장, 제일 앞의 숫자 변경하면 됨
           document.cookie = 'adr' + '=' + adr + ';expires=' + date.toUTCString() + ';path=/';
-          document.cookie = 'dadr' + '=' + dadr + ';expires=' + date.toUTCString() + ';path=/';
-
+          // document.cookie = 'dadr' + '=' + dadr + ';expires=' + date.toUTCString() + ';path=/';
           window.location.href = "/main/" + category + "/stores";
         }
       }
