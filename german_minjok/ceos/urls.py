@@ -10,4 +10,6 @@ urlpatterns = [
     path('<int:store_pk>/orders/', views.orders, name="orders"),
     path('order/condition/', views.set_condition, name="set_condition"),
     path('order/delete/', views.order_delete, name="order_delete"),
+    path('<int:store_pk>/pocket/', views.pocket, name="pocket"),
+    path('pocket/calculator/', views.calculator, name="calculator"),
 ]
