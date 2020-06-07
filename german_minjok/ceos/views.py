@@ -162,7 +162,10 @@ def calculator(request):
             end_date = datetime.datetime(year, month, day, 23, 59, 59)
         elif standard == '월별':
             start_date = datetime.datetime(year, month, 1, 0, 0, 0)
-            end_date = datetime.datetime(year, month, 31, 23, 59, 59)
+            if month in [1, 3, 5, 7, 8, 10, 12]:
+                end_date = datetime.datetime(year, month, 31, 23, 59, 59)
+            else:
+                end_date = datetime.datetime(year, month, 30, 23, 59, 59)
         elif standard == '년도별':
             start_date = datetime.datetime(year, 1, 1, 0, 0, 0)
             end_date = datetime.datetime(year, 12, 31, 23, 59, 59)
