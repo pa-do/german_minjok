@@ -1,5 +1,4 @@
-<h3 class="text-center my-3">배달 받으실 곳</h3>
-<div class="container">
+<div class="container mt-5">
 <div id="map" class="justify-content-center" style="height:400px;"></div>
 </div>
 
@@ -96,8 +95,8 @@ function searchAddressToCoordinate(address) {
 
     infoWindow.setContent([
       '<div style="padding:10px;min-width:200px;line-height:150%;">',
-      '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
-      htmlAddresses.join('<br />'),
+      '<h4 style="margin-top:5px;">배달 받으실 곳 : '+ address +'</h4>',
+      // htmlAddresses.join('<br />'),
       '</div>'
     ].join('\n'));
 

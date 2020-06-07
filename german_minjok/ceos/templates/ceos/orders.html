@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load bootstrap_pagination %}
+
+{% block content %}
+    <h1>orders</h1>
+    {% for order in orders %}
+    {% if order.order_condition == 0 %}
+    <hr>
+    <h1>아직 결제되지 않은 상품입니다.</h1>
+    <hr>
+    {% else %}
+    <div id="card-{{ order.pk }}" class="card">
+        {% if order.order_condition == 1 %}
+        <div id="headColor-{{ order.pk }}" class="card-header">
+        {% endif %}
+        {% if order.order_condition == 2 %}
+        <div id="headColor-{{ order.pk }}" class="card-header bg-warning font-weight-bold">
+        {% endif %}
+        {% if order.order_condition == 3 %}
+        <div id="headColor-{{ order.pk }}" class="card-header bg-success font-weight-bold">
+        {% endif %}
+            <div class="row">
+                <span>{{ order.order_name }}</span>
+                <div id="conditionTxt-{{ order.pk }}" class="ml-auto font-weight-bold">
+                {% if order.order_condition == 2 %}
+                    준비중
+                {% endif %}
+                {% if order.order_condition == 3 %}
+                    완료
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+        <h5 class="card-title">주소: {{ order.order_location }}</h5>
+        <p class="card-text">전화번호: {{ order.user.phone_number }}</p>
+        <p class="card-text">가격: {{ order.order_price }}</p>
+        <p class="card-text">{{ order.order_time }}</p>
+        <div class="row px-1 align-items-end">
+            <button data-order="{{ order.pk }}" class="btn btn-warning mx-2 checkBtn">주문확인</button>
+            <butoon data-order="{{ order.pk }}" class="btn btn-success doneBtn">배달완료</butoon>
+            <butoon data-order="{{ order.pk }}" class="btn btn-danger ml-auto btn-sm deleteBtn ">취소</butoon>
+        </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="mt-5">
+        {% bootstrap_paginate orders range=5 show_prev_next="false" show_first_last="true" %}
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    axios.defaults.xsrfCookieName = 'csrftoken'
+    axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+    const checkBtns = document.querySelectorAll('.checkBtn')
+    checkBtns.forEach(function(checkBtn){
+        checkBtn.addEventListener('click', function(event){
+            axios.post('/ceos/order/condition/', { params: {
+                order_pk: checkBtn.dataset.order,
+                order_condition: 2
+            }})
+             .then(res => {
+                 order_pk = checkBtn.dataset.order
+                const conditionTxt = document.querySelector(`#conditionTxt-${order_pk}`)
+                conditionTxt.innerText = '준비중'
+                const headColor = document.querySelector(`#headColor-${order_pk}`)
+                headColor.classList.add('bg-warning')
+            })
+             .catch(err => console.error(err))
+            })
+    })
+    const doneBtns = document.querySelectorAll('.doneBtn')
+    doneBtns.forEach(function(doneBtn){
+        doneBtn.addEventListener('click', function(event){
+            axios.post('/ceos/order/condition/', { params: {
+                order_pk: doneBtn.dataset.order,
+                order_condition: 3
+            }})
+            .then(res => {
+                order_pk = doneBtn.dataset.order
+                const conditionTxt = document.querySelector(`#conditionTxt-${order_pk}`)
+                conditionTxt.innerText = '완료'
+                const headColor = document.querySelector(`#headColor-${order_pk}`)
+                headColor.classList.remove('bg-warning')
+                headColor.classList.add('bg-success')
+            })
+            .catch(err => console.error(err))
+        })
+    })
+    const deleteBtns = document.querySelectorAll('.deleteBtn')
+    deleteBtns.forEach(function(deleteBtn){
+        deleteBtn.addEventListener('click', function(event){
+            axios.post('/ceos/order/delete/', {params: {
+                order_pk: deleteBtn.dataset.order,
+            }})
+             .then(res => {
+                 order_pk = deleteBtn.dataset.order
+                //  const card = document.querySelector(`#card-${order_pk}`)
+                //  card.classList.add('d-none')
+                const conditionTxt = document.querySelector(`#conditionTxt-${order_pk}`)
+                conditionTxt.innerText = '삭제된 주문입니다.'
+                const headColor = document.querySelector(`#headColor-${order_pk}`)
+                headColor.classList.remove('bg-warning')
+                headColor.classList.remove('bg-success')
+                headColor.classList.add('bg-danger')
+             })
+            .catch(err => console.error(err))
+        })
+    })
+  </script>
+{% endblock %}
