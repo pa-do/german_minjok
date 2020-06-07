@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load bootstrap_pagination %}
+
+{% block content %}
+<h1>{{ store.store_name }}</h1>
+
+<div class="dropdown d-inline-block">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    선택
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" id="getDay">일별</a>
+    <a class="dropdown-item" id="getMonth">월별</a>
+    <a class="dropdown-item" id="getYear">년도별</a>
+    <a class="dropdown-item" id="getAll">전체</a>
+  </div>
+</div>
+
+<div class="d-inline-block ml-3" id="subOptionDiv">
+</div>
+
+<div class="d-inline-block">합계 : <div id="sum" class="d-inline-block"></div>원</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">주문 시각</th>
+      <th scope="col">주문 금액</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+  </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  axios.defaults.xsrfCookieName = 'csrftoken'
+  axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
+  var getDayClick = document.getElementById('getDay');
+  getDayClick.addEventListener('click', function(){
+      getDay();
+  });
+  var getMonthClick = document.getElementById('getMonth');
+  getMonthClick.addEventListener('click', function(){
+      getMonth();
+  });
+  var getYearClick = document.getElementById('getYear');
+  getYearClick.addEventListener('click', function(){
+      getYear();
+  });
+  var getAllClick = document.getElementById('getAll');
+  getAllClick.addEventListener('click', function(){
+      getAll();
+  });
+
+  function createYear(parent) {
+    let today = new Date()
+    var sel = document.createElement("select");
+    sel.id = "selectedYear";
+    for(var i=today.getFullYear(); i > 2018; i--) {
+      var op = document.createElement("option");
+      op.value = i;
+      op.text = i;
+      sel.appendChild(op);
+    }
+    parent.appendChild(sel);
+  };
+
+  function createMonth(parent) {
+    var sel = document.createElement("select");
+    sel.id = "selectedMonth";
+    for(var i=1; i < 13; i++) {
+      var op = document.createElement("option");
+      op.value = i;
+      op.text = i;
+      sel.appendChild(op);
+    }
+    parent.appendChild(sel);
+  };
+
+  function createDay(parent) {
+    var sel = document.createElement("select");
+    sel.id = "selectedDay";
+    for(var i=1; i < 32; i++) {
+      var op = document.createElement("option");
+      op.value = i;
+      op.text = i;
+      sel.appendChild(op);
+    }
+    parent.appendChild(sel);
+  };
+
+  function createButton(parent) {
+    var bt = document.createElement("button");
+    bt.innerHTML = "조회"
+    bt.className = "btn btn-info"
+    bt.onclick = function(){
+      search();
+    };
+    parent.appendChild(bt);
+  };
+
+  function getDay() {
+    var di = document.getElementById('subOptionDiv');
+    while ( di.hasChildNodes() ) {
+      di.removeChild( di.firstChild );
+    };
+    document.getElementById('dropdownMenuLink').text = "일별";
+
+    createYear(di);
+    createMonth(di);
+    createDay(di);
+    createButton(di);
+
+
+  };
+
+  function getMonth() {
+    var di = document.getElementById('subOptionDiv');
+    while ( di.hasChildNodes() ) {
+      di.removeChild( di.firstChild );
+    };
+    document.getElementById('dropdownMenuLink').text = "월별";
+
+    createYear(di);
+    createMonth(di);
+    createButton(di);
+  };
+
+  function getYear() {
+    var di = document.getElementById('subOptionDiv');
+    while ( di.hasChildNodes() ) {
+      di.removeChild( di.firstChild );
+    };
+    document.getElementById('dropdownMenuLink').text = "년도별";
+
+    createYear(di);
+    createButton(di);
+  };
+
+  function getAll() {
+    var di = document.getElementById('subOptionDiv');
+    while ( di.hasChildNodes() ) {
+      di.removeChild( di.firstChild );
+    };
+    document.getElementById('dropdownMenuLink').text = "전체";
+
+    createButton(di);
+
+  };
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function createTable(parent, cnt, time, price) {
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    td.innerText = cnt;
+    tr.appendChild(td);
+    var td = document.createElement("td");
+    td.innerText = time;
+    tr.appendChild(td);
+    var td = document.createElement("td");
+    td.innerText = numberWithCommas(price)+'원';
+    tr.appendChild(td);
+
+    parent.appendChild(tr);
+  };
+
+  function search() {
+    var body = document.getElementById('myTable');
+    while ( body.hasChildNodes() ) {
+      body.removeChild( body.firstChild );
+    };
+    try {
+      var year = document.getElementById('selectedYear').value;
+    } catch (e) {
+      var year = '2020';
+    }
+    try {
+      var month = document.getElementById('selectedMonth').value;
+    } catch (e) {
+      var month = '1';
+    }
+    try {
+      var day = document.getElementById('selectedDay').value;
+    } catch (e) {
+      var day = '1';
+    }
+    var standard = document.getElementById('dropdownMenuLink').text
+    console.log(year);
+
+    axios.post('/ceos/pocket/calculator/', { params: {
+        store_pk: {{ store.pk }},
+        year: year,
+        month: month,
+        day: day,
+        standard: standard,
+    }})
+     .then(res => {
+        var cnt = 1
+        var sumPrice = 0
+        res['data']['orders'].forEach(
+          order => {
+            createTable(body, cnt++, order['order_time'], order['order_price']);
+            sumPrice += order['order_price'];
+          }
+        );
+        document.getElementById('sum').innerHTML = numberWithCommas(sumPrice);
+      })
+     .catch(err => console.error(err))
+  }
+
+
+
+</script>
+
+{% endblock %}

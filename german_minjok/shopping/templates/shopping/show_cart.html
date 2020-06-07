@@ -6,9 +6,9 @@
 {% get_cart as cart %}
 
 {% if status %}
-  <div class="pt-3 row justify-content-center">
+  <div class="pt-3 row justify-content-center mx-auto cart-w">
     <h2 class="text-center my-5 col-12">장바구니</h2>
-    <div class="p-5 bg-light" style="width: 30rem;">
+    <div class="p-5 bg-light cart-w">
       <h3 class="text-center my-5">{{ store }}</h3>
       <div>
         <div class="my-3 row"><div class="h5 col-6">장소</div><div class="h6 col-6 text-right">{{ location }}</div></div>
@@ -27,7 +27,7 @@
       </div>
     </div>
   </div>
-  <div class="row my-5">
+  <div class="row my-5 mx-auto cart-w">
     <form method="post" class="col-12 text-center">
       {% csrf_token %}
       <button class="btn btn-warning">카카오페이로 결제하기</button>
