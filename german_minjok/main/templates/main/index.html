@@ -54,12 +54,13 @@
     <div class="form-group col-12 justify-content-md-center">
       {% if user.is_authenticated %}
       <input
-        type="text" class="form-control-plaintext text-right col-4" id="address" placeholder="{{ adr }}" value="{{ adr }}" readonly/><br />
+      <input
+        type="text" class="form-control col-4" id="address" placeholder="{{ adr }}" value="{{ adr }}" readonly/><br />
       <input
         type="text" class="form-control ml-3 col-2" id="detailAddress" placeholder="{{ dadr }}" value="{{ dadr }}"/>
       {% else %}
       <input
-        type="text" class="form-control-plaintex text-right col-4" id="address" placeholder="어디로 배달해 드릴까요?" readonly/><br />
+        type="text" class="form-control col-4" id="address" placeholder="어디로 배달해 드릴까요?" readonly/><br />
       <input
         type="text" class="form-control ml-3 col-2" id="detailAddress" placeholder="상세주소" />
       {% endif %}
