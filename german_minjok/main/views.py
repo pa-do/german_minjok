@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
+from django.core import serializers
+
 from accounts.models import *
 from ceos.models import Store
 
-# Create your views here.
+
 def index(request):
     if request.user.is_authenticated:
         location = UserLocation.objects.get(user=request.user)
@@ -16,22 +18,23 @@ def index(request):
         }
     return render(request, 'main/index.html', context)
 
-def temp(request, category):
+
+def stores(request, category):
     if category != 5:
         stores = Store.objects.filter(store_cartegory=category)
     else:
         stores = Store.objects.all()
+    json_serializer = serializers.get_serializer("json")()
+    # storesData에 쿼리로 가져온 stores를 json으로 시리얼라이즈해서 context에 담아 던집니다.
+    storesData = json_serializer.serialize(stores, ensure_ascii=False)
+    category_name = ['한식', '중식', '일식', '피자', '치킨', '전체']
     context = {
         'category': category,
         'stores': stores,
+        'store_name': category_name[category],
+        'storesData': storesData,
     }
-    # test cookie
-    # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-    # print(request.COOKIES['adr'])
-    # print(request.COOKIES['dadr'])
-    # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-    #
-    return render(request, 'main/temp.html', context)
+    return render(request, 'main/stores.html', context)
 
 
 def menu(request, store_pk):

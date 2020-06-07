@@ -90,7 +90,6 @@ def show_cart(request):
     if cnt > 1:
         cart_item += '외 {}건'.format(cnt-1)
     if request.method == "POST":    # 버튼 누르면
-
         URL = 'https://kapi.kakao.com/v1/payment/ready'
         headers = {
             "Authorization": "KakaoAK " + "965c38ccc1d83d33c9577c0b870eb506",   # 변경불가
