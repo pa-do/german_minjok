@@ -1,6 +1,5 @@
 from django.urls import path
 from django.conf import settings
-from django.conf.urls.static import static
 
 from . import views
 
@@ -8,4 +7,7 @@ app_name = "ceos"
 
 urlpatterns = [
     path('', views.index, name="index"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('<int:store_pk>/orders/', views.orders, name="orders"),
+    path('order/condition/', views.set_condition, name="set_condition"),
+    path('order/delete/', views.order_delete, name="order_delete"),
+]
