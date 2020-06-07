@@ -1,23 +1,35 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 import requests
-
-from ceos.models import OrderList
-
+from carton.cart import Cart
+from ceos.models import StoreMenu, Store, OrderList
 # Create your views here.
 
 def approval(request):
-    order_list = OrderList.objects.filter(user=request.user).filter(order_condition=0)[0]
-    order_list.order_condition = 1
-    order_list.save()
+    User = get_user_model()
+    user = get_object_or_404(User, pk=request.user.pk)
+    cart = Cart(request.session)
+    order_items = []
+    for item in cart.items:
+        cart_item = item.product.menu_name
+        cart_quantity = item.quantity
+        order_items.append('{}_{}'.format(cart_item, cart_quantity))
 
+    order_list = OrderList.objects.create(
+        user=user,
+        store=get_object_or_404(Store, pk=request.session['store_pk']),
+        order_condition=1,
+        order_location=request.COOKIES['adr'] + ' ' + request.COOKIES['dadr'],
+        order_name='/'.join(order_items),  # 유저이름 + 가게이름: 의미 없는 문자열
+        order_price=cart.total  # 장바구니의 총 가격
+    )
+
+    cart.clear()
     URL = 'https://kapi.kakao.com/v1/payment/approve'
     headers = {
         "Authorization": "KakaoAK " + "965c38ccc1d83d33c9577c0b870eb506",   # 변경불가
         "Content-type": "application/x-www-form-urlencoded;charset=utf-8",  # 변경불가
     }
-    User = get_user_model()
-    user = get_object_or_404(User, pk=request.user.pk)
     params = {
         "cid": "TC0ONETIME",    # 변경불가. 실제로 사용하려면 카카오와 가맹을 맺어야함. 현재 코드는 테스트용 코드
         "tid": request.session['tid'],  # 결제 요청시 세션에 저장한 tid
