@@ -20,10 +20,16 @@ def index(request):
 
 
 def stores(request, category):
+    ad = request.COOKIES['adr']
+    # [] 배열안 숫자에 따라서 소트 하기 위한 변수 0은 '도', 1은 '시' 2는 '동'
+    address = list(ad.split())[1]
+    # print(address)
     if category != 5:
-        stores = Store.objects.filter(store_cartegory=category)
+        # stores = Store.objects.filter(store_cartegory=category)
+        stores = Store.objects.filter(store_location__icontains=address,
+                                    store_cartegory=category)
     else:
-        stores = Store.objects.all()
+        stores = Store.objects.filter(store_location__icontains=address)
     json_serializer = serializers.get_serializer("json")()
     # storesData에 쿼리로 가져온 stores를 json으로 시리얼라이즈해서 context에 담아 던집니다.
     storesData = json_serializer.serialize(stores, ensure_ascii=False)
