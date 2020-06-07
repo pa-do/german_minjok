@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-info sticky-top">
-    <a class="navbar-brand" href="{% url 'main:index' %}">LOGO</a>
+  <a class="navbar-brand" href="{% url 'main:index' %}"><img src="../media/LOGO.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy"></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -20,6 +20,9 @@
         <a class="nav-item nav-link" href="{% url 'accounts:login' %}">로그인</a>
         {% endif %}
         <a class="nav-item nav-link" href="{% url 'shopping:show_cart' %}">장바구니</a>
+        {% if request.user.is_authenticated and request.user.auth_code == 2 %}
+        <a class="nav-item nav-link" href="{% url 'ceos:index' %}">가게 관리</a>
+        {% endif %}
       </div>
     </div>
   </nav>
