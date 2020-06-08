@@ -188,19 +188,43 @@ def calculator(request):
 
 
 @login_required
-def create_menu(request):
+def create_menu(request, store_pk):
+    store = get_object_or_404(Store, pk=store_pk)
     if request.user.auth_code == 2:
-        menu_form = StoreForm(request.POST, request.FILES)
+        menu_form = MenuForm(request.POST, request.FILES)
         if menu_form.is_valid():
             menu = menu_form.save(commit=False)
-            menu.manager = request.user
+            menu.store = store
             menu.save()
-            return redirect('ceos:index')
+            return redirect('ceos:detail_store', store_pk)
         else:
             menu_form = MenuForm()
         context = {
             'menu_form': menu_form,
         }
         return render(request, 'ceos/form_menu.html', context)
+    else:
+        return redirect('main:index')
+
+@login_required
+def update_menu(request, store_pk, menu_pk):
+    if request.user.auth_code == 2:
+        store = get_object_or_404(Store, pk=store_pk)
+        storemenu = get_object_or_404(StoreMenu, pk=menu_pk)
+        if request.user == store.manager:
+            menu_form = MenuForm(request.POST, instance=storemenu)
+            if menu_form.is_valid():
+                menu = menu_form.save(commit=False)
+                menu.store = store
+                menu.save()
+                return redirect('ceos:detail_store', store_pk)
+            else:
+                menu_form = MenuForm(instance=storemenu)
+            context = {
+                'menu_form': menu_form,
+            }
+            return render(request, 'ceos/form_menu.html', context)
+        else:
+            return redirect('ceos:index')
     else:
         return redirect('main:index')
