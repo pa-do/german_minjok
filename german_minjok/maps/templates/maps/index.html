@@ -26,6 +26,7 @@ var infoWindow = new naver.maps.InfoWindow({
 
 map.setCursor('pointer');
 var markers = [];
+var infoWindows = [];
 // function searchCoordinateToAddress(latlng) {
 
 //   infoWindow.close();
@@ -137,9 +138,13 @@ function getAddressToCoordinate(address) {
       position: new naver.maps.LatLng(point),
       map: map
     });
+    naver.maps.Event.addListener(marker, 'click', function(e){
+      infoWindow.close();
+      map.panTo(e.coord);
+    });
     markers.push(marker)
-    // console.log(marker)
     marker = null
+    // infoWindow = null
   })
 }
 // ------------------------------------------------------------
@@ -173,8 +178,9 @@ function initGeocoder() {
   // python/main/views/stores에서 storesData라는 이름으로 던진 것을 받아
   // 오브젝트배열로 변환하고 forEach로 각각 getAddressToCoordinate 를 실행합니다.
   stores = JSON.parse(stores)
+ 
   stores.forEach(function(store){
-    getAddressToCoordinate(store.fields.store_location)
+    getAddressToCoordinate(store.fields.store_location);
   })
   // marker가 담겨있는 배열입니다. == markers
   // https://navermaps.github.io/maps.js.ncp/docs/tutorial-marker-viewportevents.example.html
@@ -183,6 +189,25 @@ function initGeocoder() {
   // console.log(markers)
 }
 
+// for(var i in markers){
+//     var key = markers[i].key;
+//     naver.maps.Event.addListener(markers[i], 'click', function(key){	// 외부함수
+//         return function(){	// 내부 함수
+//             console.log(key);
+//             openInfoWindow(key);
+//         }        
+//     }(key));	// 외부함수를 바로 호출 (매개변수 key)
+// }
+
+// 아무데나 클릭하면 인포윈도우 닫는 리스너
+// map.addListener('click', function() {
+//   infoWindow.close()
+// })
+
 // naver.maps.onJSContentLoaded = initGeocoder;
 naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
+// for (var i=0, ii=markers.length; i<ii; i++) {
+//     naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+//     console.log(i)
+// }
 </script>
