@@ -55,14 +55,17 @@
                 <img src="{{ menu.menu_image.url }}" class="card-img" alt="...">
             </div>
             <div class="col-md-8">
-                <a href="{% url 'ceos:update_menu' store.pk menu.pk %}">
-                    <div class="card-body">
-                        <h5>{{ menu.menu_name }}</h5>
-                        <p>{{ menu.menu_info }}</p>
-                        <span>{{ menu.menu_price }} 원</span><br>
+                <div class="card-body">
+                    <h5>{{ menu.menu_name }}</h5>
+                    <p>{{ menu.menu_info }}</p>
+                    <span>{{ menu.menu_price }} 원</span><br>
+                    <a href="{% url 'ceos:update_menu' store.pk menu.pk %}">
                         <button class="btn btn-primary">메뉴 수정</button>
+                    </a>
+                    <a href="{% url 'ceos:delete_menu' store.pk menu.pk %}">
+                        <button class="btn btn-primary">메뉴 삭제</button>
+                    </a>
                     </div>
-                </a>
             </div>
         </div>
     </div>

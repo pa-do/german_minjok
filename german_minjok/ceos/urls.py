@@ -17,4 +17,5 @@ urlpatterns = [
     path('pocket/calculator/', views.calculator, name="calculator"),
     path('<int:store_pk>/create_menu/', views.create_menu, name="create_menu"),
     path('<int:store_pk>/<int:menu_pk>/update_menu/', views.update_menu, name="update_menu"),
+    path('detail_store/<int:store_pk>/<int:menu_pk>/', views.delete_menu, name="delete_menu"),
 ]

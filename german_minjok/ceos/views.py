@@ -228,3 +228,12 @@ def update_menu(request, store_pk, menu_pk):
             return redirect('ceos:index')
     else:
         return redirect('main:index')
+
+@login_required
+def delete_menu(request, store_pk, menu_pk):
+    store = get_object_or_404(Store, pk=store_pk)
+    storemenu = get_object_or_404(StoreMenu, pk=menu_pk)
+    if request.user == store.manager:
+        storemenu.delete()
+
+    return redirect('ceos:detail_store', store_pk)
