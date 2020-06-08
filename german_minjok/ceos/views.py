@@ -71,6 +71,13 @@ def update_store(request, store_pk):
     else:
         return redirect('main:index')
 
+@login_required
+def delete_store(request, store_pk):
+    if request.user.auth_code == 2:
+        store = get_object_or_404(Store, pk=store_pk)
+        if request.user == store.manager:
+            store.delete()
+        return redirect('ceos:index')
 
 @login_required
 def detail_store(request, store_pk):
