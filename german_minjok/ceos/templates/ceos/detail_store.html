@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %}
 {% block content %}
-
+<link rel="stylesheet" href="{% static 'main/style.css' %}" type="text/css" media="screen">
     <h2 class="mt-3 ml-3">{{ store.store_name }}</h2>
-    <div class="card m-3" style="max-width: 540px;">
+    <div class="card m-3 card-style">
     <div class="row no-gutters">
         <div class="col-md-4">
         <img src="{{ store.store_image.url }}" class="card-img" alt="...">
@@ -19,7 +19,7 @@
     <hr>
 
     <a href="{% url 'ceos:orders' store.pk %}" style="text-decoration: none; color: #000000;">
-    <div class="card m-3" style="max-width: 540px;">
+        <div class="card m-3 card-style">
         <div class="row no-gutters">
             <div class="col-md-4">
                 <!--<img src="{{ menu.menu_image.url }}" class="card-img" alt="...">-->
@@ -34,7 +34,7 @@
     </a>
 
     <a href="{% url 'ceos:pocket' store.pk %}" style="text-decoration: none; color: #000000;">
-    <div class="card m-3" style="max-width: 540px;">
+    <div class="card m-3 card-style">
         <div class="row no-gutters">
             <div class="col-md-4">
                 <!--<img src="{{ menu.menu_image.url }}" class="card-img" alt="...">-->
@@ -49,7 +49,7 @@
     </a>
 
     {% for menu in menu_list%}
-    <div class="card m-3" style="max-width: 540px;">
+    <div class="card m-3 card-style">
         <div class="row no-gutters">
             <div class="col-md-4">
                 <img src="{{ menu.menu_image.url }}" class="card-img" alt="...">

@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/style.css' %}" type="text/css" media="screen">
 <div>
   <!-- carousel -->
   <div
@@ -54,41 +57,24 @@
     <div class="form-group col-12 justify-content-md-center">
       {% if user.is_authenticated %}
       <input
-        type="text" class="form-control-plaintext text-right col-4" id="address" placeholder="{{ adr }}" value="{{ adr }}" readonly/><br />
+        type="text" class="form-control col-4" id="address" placeholder="{{ adr }}" value="{{ adr }}" readonly/><br />
       <input
         type="text" class="form-control ml-3 col-2" id="detailAddress" placeholder="{{ dadr }}" value="{{ dadr }}"/>
       {% else %}
       <input
-        type="text" class="form-control-plaintex text-right col-4" id="address" placeholder="어디로 배달해 드릴까요?" readonly/><br />
+        type="text" class="form-control col-4" id="address" placeholder="어디로 배달해 드릴까요?" readonly/><br />
       <input
         type="text" class="form-control ml-3 col-2" id="detailAddress" placeholder="상세주소" />
       {% endif %}
       <input
-        type="button" class="btn btn-info" onclick="sample3_execDaumPostcode()" value="주소 검색" /><br />
+        type="button" class="btn btn-info" id="btnSearch" value="주소 검색" /><br />
       <!-- <input type="text" id="sample3_extraAddress" placeholder="참고항목"> -->
 
-      <div
-        id="wrap"
-        style="
-          display: none;
-          border: 1px solid;
-          width: 500px;
-          height: 300px;
-          margin: 5px 0;
-          position: relative;
-        "
-      >
+      <div id="wrap" class="daum1" >
         <img
+          class="daum2"
           src="//t1.daumcdn.net/postcode/resource/images/close.png"
           id="btnFoldWrap"
-          style="
-            cursor: pointer;
-            position: absolute;
-            right: 0px;
-            top: -1px;
-            z-index: 1;
-          "
-          onclick="foldDaumPostcode()"
           alt="접기 버튼"
         />
       </div>
@@ -98,12 +84,14 @@
         // 우편번호 찾기 찾기 화면을 넣을 element
         var element_wrap = document.getElementById("wrap");
 
-        function foldDaumPostcode() {
+        const foldBtn = document.querySelector('#btnFoldWrap')
+        foldBtn.addEventListener('click', function(event){
           // iframe을 넣은 element를 안보이게 한다.
           element_wrap.style.display = "none";
-        }
+        })
 
-        function sample3_execDaumPostcode() {
+        const searchBtn = document.querySelector('#btnSearch')
+        searchBtn.addEventListener('click', function(event){
           // 현재 scroll 위치를 저장해놓는다.
           var currentScroll = Math.max(
             document.body.scrollTop,
@@ -173,7 +161,7 @@
 
           // iframe을 넣은 element를 보이게 한다.
           element_wrap.style.display = "block";
-        }
+        })
       </script>
     </div>
   </form>
@@ -181,7 +169,7 @@
   <!-- cards -->
   <div class="row row-cols-1 row-cols-md-3 col-8 mx-auto">
     <div class="col mb-4">
-      <div class="card" onclick="setSession(5)" style="cursor: pointer">
+      <div class="c-style card rest-btn" id="5">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-01.png"
           class="card-img-top"
@@ -193,7 +181,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(0)" style="cursor: pointer">
+      <div class="c-style card rest-btn" id="0">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-05.png"
           class="card-img-top"
@@ -205,7 +193,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(1)" style="cursor: pointer">
+      <div class="c-style card rest-btn" id="1">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-04.png"
           class="card-img-top"
@@ -217,7 +205,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(2)" style="cursor: pointer">
+      <div class="c-style card rest-btn" id="2">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-06.png"
           class="card-img-top"
@@ -229,7 +217,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(3)" style="cursor: pointer">
+      <div class="c-style card rest-btn" id="3">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-03.png"
           class="card-img-top"
@@ -241,7 +229,7 @@
       </div>
     </div>
     <div class="col mb-4">
-      <div class="card" onclick="setSession(4)" style="cursor: pointer">
+      <div class="c-style card rest-btn" id="4">
         <img
           src="https://www.yogiyo.co.kr/mobile/image/category-02.png"
           class="card-img-top"
@@ -264,23 +252,26 @@
         }
       }
 
-    function setSession(category) {
-      if (window.sessionStorage) {
-        adr = document.getElementById("address").value;
-        if (adr != "") {
-          dadr = document.getElementById("detailAddress").value;
-          sessionStorage.setItem("adr", adr);
-          sessionStorage.setItem("dadr",dadr);
-          // cookie
-          var date = new Date();
-          date.setTime(date.getTime() + 1 * 60 * 60 * 24 * 1000)  // 1일간 쿠키에 저장, 제일 앞의 숫자 변경하면 됨
-          document.cookie = 'adr' + '=' + adr + ';expires=' + date.toUTCString() + ';path=/';
-          document.cookie = 'dadr' + '=' + dadr + ';expires=' + date.toUTCString() + ';path=/';
+    const restBtn = document.querySelectorAll(".rest-btn")
+    restBtn.forEach(function(t) {
+      t.addEventListener("click", function(event){
+        if (window.sessionStorage) {
+          adr = document.getElementById("address").value;
+          if (adr != "") {
+            dadr = document.getElementById("detailAddress").value;
+            sessionStorage.setItem("adr", adr);
+            sessionStorage.setItem("dadr",dadr);
+            // cookie
+            var date = new Date();
+            date.setTime(date.getTime() + 1 * 60 * 60 * 24 * 1000)  // 1일간 쿠키에 저장, 제일 앞의 숫자 변경하면 됨
+            document.cookie = 'adr' + '=' + adr + ';expires=' + date.toUTCString() + ';path=/';
+            document.cookie = 'dadr' + '=' + dadr + ';expires=' + date.toUTCString() + ';path=/';
 
-          window.location.href = "/main/" + category + "/stores";
+            window.location.href = "/main/" + this.id + "/stores";
+          }
         }
-      }
-    }
+      })
+    })
   </script>
 </div>
 {% endblock %}

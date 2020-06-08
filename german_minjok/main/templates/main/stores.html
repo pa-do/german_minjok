@@ -12,8 +12,8 @@
   {% include 'maps/index.html' %}
 
   {% for store in stores %}
-  <a href="{% url 'main:menu' store.pk %}" style="text-decoration: none; color: #000000;">
-    <div class="card m-3" style="max-width: 540px; cursor: pointer;">
+  <a href="{% url 'main:menu' store.pk %}">
+    <div class="card m-3 card-style c-style">
       <div class="row no-gutters">
         <div class="col-md-4">
           <img src="{{ store.store_image.url }}" class="card-img" alt="...">
