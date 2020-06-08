@@ -139,8 +139,9 @@ function getAddressToCoordinate(address) {
       map: map
     });
     naver.maps.Event.addListener(marker, 'click', function(e){
+      infoWindow.close();
       map.panTo(e.coord);
-      });
+    });
     markers.push(marker)
     marker = null
     // infoWindow = null
@@ -198,15 +199,15 @@ function initGeocoder() {
 //     }(key));	// 외부함수를 바로 호출 (매개변수 key)
 // }
 
+// 아무데나 클릭하면 인포윈도우 닫는 리스너
+// map.addListener('click', function() {
+//   infoWindow.close()
+// })
+
+// naver.maps.onJSContentLoaded = initGeocoder;
+naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
 // for (var i=0, ii=markers.length; i<ii; i++) {
 //     naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
 //     console.log(i)
 // }
-// 아무데나 클릭하면 인포윈도우 닫는 리스너
-map.addListener('click', function() {
-  infoWindow.close()
-})
-
-// naver.maps.onJSContentLoaded = initGeocoder;
-naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
 </script>

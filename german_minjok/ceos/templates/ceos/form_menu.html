@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/style.css' %}" type="text/css" media="screen">
+    {% load bootstrap4 %}
+
+    {% if request.resolver_match.url_name == 'create_menu' %}
+        <h1 class="text-center">메뉴 추가하기</h1>
+    {% else %}
+        <h1 class="text-center">메뉴 수정하기</h1>
+    {% endif %}
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% bootstrap_form menu_form %}
+      <button type="submit" class="btn btn-primary">완료</button>
+    </form>
+{% endblock %} 

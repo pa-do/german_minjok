@@ -1,5 +1,5 @@
 from django import forms
-from .models import Store
+from .models import Store, StoreMenu
 
 class StoreForm(forms.ModelForm):
     class Meta:
@@ -12,3 +12,15 @@ class StoreForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StoreForm, self).__init__(*args, **kwargs)
         self.fields['store_image'].required = False
+
+class MenuForm(forms.ModelForm):
+    class Meta:
+        model = StoreMenu
+        fields = ['menu_name', 'menu_info',
+        'menu_price', 'menu_image']
+        labels = {'menu_name': '메뉴 이름', 'menu_info': '메뉴 정보',
+        'menu_price': '메뉴 가격', 'menu_image': '메뉴 이미지'}
+         
+    def __init__(self, *args, **kwargs):
+        super(MenuForm, self).__init__(*args, **kwargs)
+        self.fields['menu_image'].required = False

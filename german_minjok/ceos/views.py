@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 
 from accounts.models import *
 from .models import Store, OrderList
-from ceos.forms import StoreForm
+from ceos.forms import *
 
 
 def is_manager(user, store):
@@ -185,3 +185,22 @@ def calculator(request):
             'message': 'ERROR',
         }
         return JsonResponse(context)
+
+
+@login_required
+def create_menu(request):
+    if request.user.auth_code == 2:
+        menu_form = StoreForm(request.POST, request.FILES)
+        if menu_form.is_valid():
+            menu = menu_form.save(commit=False)
+            menu.manager = request.user
+            menu.save()
+            return redirect('ceos:index')
+        else:
+            menu_form = MenuForm()
+        context = {
+            'menu_form': menu_form,
+        }
+        return render(request, 'ceos/form_menu.html', context)
+    else:
+        return redirect('main:index')
