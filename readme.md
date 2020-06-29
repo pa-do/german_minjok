@@ -16,7 +16,7 @@
 
 ### <메인화면>
 
-#### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates/main)/**index.html**
+#### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates/main)/[index.html](https://github.com/do-park/german_minjok/blob/master/german_minjok/main/templates/main/index.html)
 
 
 ![image1](/readme/image1.png)
