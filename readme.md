@@ -27,7 +27,7 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[accounts](https://github.com/do-park/german_minjok/tree/master/german_minjok/accounts)/**views.py**
 
-![image9](readme\image9.png)
+![image9](/readme/image9.png)
 
 ### <배달지 주변지도 및 가게 리스트 - 네이버 지도 API 사용>
 
@@ -37,7 +37,7 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/**views.py** / stores 
 
-#### ![image2](readme\image2.png)
+#### ![image2](/readme/image2.png)
 
 
 
@@ -47,7 +47,7 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/**views.py** / menu 
 
-![image3](readme\image3.png)
+![image3](/readme/image3.png)
 
 
 
@@ -61,7 +61,7 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[shopping](https://github.com/do-park/german_minjok/tree/master/german_minjok/shopping)/**views.py** 
 
-![image4](readme\image4.png)
+![image4](/readme/image4.png)
 
 
 
@@ -71,7 +71,7 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[ceos](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos/templates)/[ceos](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos/templates/ceos)/**index.html
 
-![image5](readme\image5.png)
+![image5](/readme/image5.png)
 
 
 
@@ -79,7 +79,7 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[ceos](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos/templates)/[ceos](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos/templates/ceos)/**detail_store.html
 
-![image8](readme\image8.png)
+![image8](/readme/image8.png)
 
 
 
@@ -89,7 +89,7 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[ceos](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos)/**views.py** / calculator 
 
-![image7](readme\image7.png)
+![image7](/readme/image7.png)
 
 
 
@@ -99,4 +99,4 @@
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[ceos](https://github.com/do-park/german_minjok/tree/master/german_minjok/ceos)/**views.py** / orders 
 
-![image6](readme\image6.png)
+![image6](/readme/image6.png)
