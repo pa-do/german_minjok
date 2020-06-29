@@ -19,7 +19,7 @@
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates/main)/**index.html**
 
 
-![image1](..\readme\image1.png)
+![image1](/readme/image1.png)
 
 ### <회원가입(휴대폰 번호 인증) - 네이버 sens sms API 사용>
 
