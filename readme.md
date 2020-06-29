@@ -43,7 +43,7 @@
 
 ### <메뉴 리스트>
 
-#### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates/main)/[menu_list.html](https://github.com/do-park/german_minjok/blob/master/german_minjok/main/templates/main/menu_list.html]
+#### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main/templates/main)/[menu_list.html](https://github.com/do-park/german_minjok/blob/master/german_minjok/main/templates/main/menu_list.html)
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[main](https://github.com/do-park/german_minjok/tree/master/german_minjok/main)/[views.py/menu](https://github.com/do-park/german_minjok/blob/master/german_minjok/main/views.py#L44)
 
