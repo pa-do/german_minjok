@@ -23,7 +23,7 @@
 
 ![image1](/readme/image1.png)
 
-### <회원가입(휴대폰 번호 인증) - 네이버 sens sms API 사용>
+### <회원가입(휴대폰 번호 인증) - 네이버 sens SMS API 사용>
 
 #### [german_minjok](https://github.com/do-park/german_minjok)/[german_minjok](https://github.com/do-park/german_minjok/tree/master/german_minjok)/[accounts](https://github.com/do-park/german_minjok/tree/master/german_minjok/accounts)/[templates](https://github.com/do-park/german_minjok/tree/master/german_minjok/accounts/templates)/[accounts](https://github.com/do-park/german_minjok/tree/master/german_minjok/accounts/templates/accounts)/[form.html](https://github.com/do-park/german_minjok/blob/master/german_minjok/accounts/templates/accounts/form.html)
 
